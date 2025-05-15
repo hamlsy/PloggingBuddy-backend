@@ -28,9 +28,6 @@ import java.util.UUID;
 @Transactional
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    private final String TEMP_NICKNAME_HEADER = "PLG_";
-    private final int TEMP_NICKNAME_LENGTH = 10;
-
     private final MemberRepository memberRepository;
 
     @Override
@@ -54,6 +51,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String socialId = oauth2UserInfo.getSocialId();
         String email = oauth2UserInfo.getEmail();
         String profileImageUrl = oauth2UserInfo.getProfileImageUrl();
+        String nickname = oauth2UserInfo.getNickname();
 
         log.info("socialId={}", socialId);
         log.info("email={}", email);
@@ -62,15 +60,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         // 카카오 전용
         String username = socialId;
         Optional<Member> targetMember = memberRepository.findByUsername(username);
-        Member member = targetMember.orElseGet(() -> signupSocialMember(username, email, profileImageUrl));
+        Member member = targetMember.orElseGet(() -> signupSocialMember(username, email, nickname, profileImageUrl));
 
         return new CustomOAuthUser(member,
                 Collections.singleton(new SimpleGrantedAuthority(member.getRole().getName())),
                 attributes);
     }
 
-    private Member signupSocialMember(String username, String email, String profileImageUrl) {
-        String nickname = TEMP_NICKNAME_HEADER + UUID.randomUUID().toString().substring(0, TEMP_NICKNAME_LENGTH);
+    private Member signupSocialMember(String username, String email, String nickname, String profileImageUrl) {
         Member member = Member.builder()
                 .username(username)
                 .nickname(nickname)

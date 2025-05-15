@@ -25,4 +25,10 @@ public class KakaoUserInfo extends OAuth2UserInfo {
         Map<String, Object> profile = (Map<String, Object>) account.get("profile");
         return (String) profile.get("profile_image_url");
     }
+
+    @Override
+    public String getNickname() {
+        Map<String, Object> profile = (Map<String, Object>) account.get("profile");
+        return (String) profile.get("nickname");
+    }
 }

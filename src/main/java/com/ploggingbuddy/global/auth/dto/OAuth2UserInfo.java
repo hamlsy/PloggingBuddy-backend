@@ -20,4 +20,7 @@ public abstract class OAuth2UserInfo {
     //프로필 사진
     public abstract String getProfileImageUrl();
 
+    //닉네임
+    public abstract String getNickname();
+
 }
