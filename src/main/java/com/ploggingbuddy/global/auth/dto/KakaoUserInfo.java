@@ -22,6 +22,7 @@ public class KakaoUserInfo extends OAuth2UserInfo {
 
     @Override
     public String getProfileImageUrl() {
-        return account.get("profile_image").toString();
+        Map<String, Object> profile = (Map<String, Object>) account.get("profile");
+        return (String) profile.get("profile_image_url");
     }
 }

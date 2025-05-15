@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class TokenService{
-    private final Key key;      //security yml 파일 생성 후 app.jwt.secret에 값 넣어주기
+    private final Key key;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final UserDetailsService userDetailsService;
 

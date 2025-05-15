@@ -20,4 +20,9 @@ public class MemberAdaptor {
                 .orElseThrow(() -> new IllegalArgumentException("username을 찾을 수 없음: " + username));
     }
 
+    public Member queryById(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("id를 찾을 수 없음: " + id));
+    }
+
 }

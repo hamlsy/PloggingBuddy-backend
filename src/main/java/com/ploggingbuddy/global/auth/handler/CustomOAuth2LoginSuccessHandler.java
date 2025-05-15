@@ -42,7 +42,7 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
         }
 
         String url = UriComponentsBuilder.fromHttpUrl(REDIRECT_URI)
-//                .queryParam("code", jwtToken.getAccessToken())
+                .queryParam("code", jwtToken.getAccessToken())
                 .queryParam("provider", provider)
                 .build()
                 .toUriString();

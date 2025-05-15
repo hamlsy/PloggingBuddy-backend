@@ -57,8 +57,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         log.info("socialId={}", socialId);
         log.info("email={}", email);
+        log.info("profileImageUrl={}", profileImageUrl);
 
-        String username = registrationId + "_" + socialId;
+        // 카카오 전용
+        String username = socialId;
         Optional<Member> targetMember = memberRepository.findByUsername(username);
         Member member = targetMember.orElseGet(() -> signupSocialMember(username, email, profileImageUrl));
 
