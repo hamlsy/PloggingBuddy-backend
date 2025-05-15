@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -67,8 +68,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private Member signupSocialMember(String username, String email, String profileImageUrl) {
-        //todo generate UUID random nickname
-        String nickname = TEMP_NICKNAME_HEADER;
+        String nickname = TEMP_NICKNAME_HEADER + UUID.randomUUID().toString().substring(0, TEMP_NICKNAME_LENGTH);
         Member member = Member.builder()
                 .username(username)
                 .nickname(nickname)

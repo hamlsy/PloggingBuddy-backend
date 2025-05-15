@@ -18,7 +18,6 @@ public class OAuth2Attributes {
         this.oAuth2UserInfo = oAuth2UserInfo;
     }
 
-    // OAuth2Utils 를 통해 분기처리 없이 생성된 OAuth2UserInfo 를 반환
     public static OAuth2Attributes of(String userNameAttributeName,
                                       Map<String, Object> attributes) {
         return OAuth2Attributes.builder()

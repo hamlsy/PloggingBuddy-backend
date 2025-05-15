@@ -1,5 +1,6 @@
 package com.ploggingbuddy.security.service;
 
+import com.ploggingbuddy.domain.member.adaptor.MemberAdaptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

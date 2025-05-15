@@ -67,7 +67,7 @@ public class TokenService{
                 .build();
     }
 
-    public Authentication getAuthentication(String accessToken) {           //TODO use in filter and annotation
+    public Authentication getAuthentication(String accessToken) {
         // Jwt 토큰 복호화
         Claims claims = parseClaims(accessToken);
 
