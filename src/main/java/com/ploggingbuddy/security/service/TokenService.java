@@ -1,5 +1,7 @@
 package com.ploggingbuddy.security.service;
 
+import com.ploggingbuddy.domain.member.entity.Member;
+import com.ploggingbuddy.global.auth.domain.CustomOAuthUser;
 import com.ploggingbuddy.security.dto.JwtToken;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -27,30 +29,17 @@ import java.util.stream.Collectors;
 public class TokenService{
     private final Key key;      //security yml 파일 생성 후 app.jwt.secret에 값 넣어주기
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final MemberAdaptor memberAdaptor;
     private final UserDetailsService userDetailsService;
 
     private final static int ACCESS_TOKEN_EXPIRATION_TIME = 1800000;
-    private final static int REFRESH_TOKEN_EXPIRATION_TIME = 604800000;
 
-    public TokenServiceImpl(@Value("${app.jwt.secret}") String key,
+    public TokenService(@Value("${app.jwt.secret}") String key,
                             AuthenticationManagerBuilder authenticationManagerBuilder,
-                            MemberAdaptor memberAdaptor,
                             UserDetailsService userDetailsService) {
         byte[] keyBytes = Decoders.BASE64.decode(key);
         this.key = Keys.hmacShaKeyFor(keyBytes);
         this.authenticationManagerBuilder = authenticationManagerBuilder;
-        this.memberAdaptor = memberAdaptor;
         this.userDetailsService = userDetailsService;
-    }
-
-
-    public JwtToken login(Long memberId) {//TODO 나중에 사용 x -> only use social
-        Member member = memberAdaptor.queryById(memberId);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getUsername(), "",
-                member.getAuthorities());
-        JwtToken jwtToken = generateToken(authentication);
-        return jwtToken;
     }
 
     public JwtToken generateToken(Authentication authentication) {
@@ -93,8 +82,6 @@ public class TokenService{
                 .collect(Collectors.toList());
 
         // UserDetails 객체를 만들어서 Authentication return
-        // UserDetails: interface, User: UserDetails를 구현한 class
-//        UserDetails principal = new User(claims.getSubject(), "", authorities);
         UserDetails principal = userDetailsService.loadUserByUsername(claims.getSubject());
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }

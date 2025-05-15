@@ -1,5 +1,6 @@
 package com.ploggingbuddy.global.auth.domain;
 
+import com.ploggingbuddy.domain.member.entity.Member;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

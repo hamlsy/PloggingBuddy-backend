@@ -32,8 +32,8 @@ public class SecurityConfig {
     private final CustomOAuth2LoginSuccessHandler customOAuth2LoginSuccessHandler;
     private final CustomOAuth2LoginFailureHandler customOAuth2LoginFailureHandler;
 
-    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+//    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+//    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtExceptionFilter jwtExceptionFilter;
@@ -52,6 +52,8 @@ public class SecurityConfig {
 //    private void configureExceptionHandling(HttpSecurity httpSecurity) throws Exception {
 //        httpSecurity
 //                .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer
+//    .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+//                        .accessDeniedHandler(jwtAccessDeniedHandler));
 //    }
 
 

@@ -1,5 +1,9 @@
 package com.ploggingbuddy.global.auth.service;
 
+import com.ploggingbuddy.domain.member.adaptor.MemberAdaptor;
+import com.ploggingbuddy.domain.member.entity.Member;
+import com.ploggingbuddy.domain.member.entity.Role;
+import com.ploggingbuddy.domain.member.repository.MemberRepository;
 import com.ploggingbuddy.global.auth.domain.CustomOAuthUser;
 import com.ploggingbuddy.global.auth.domain.OAuth2Attributes;
 import com.ploggingbuddy.global.auth.dto.OAuth2UserInfo;
@@ -26,7 +30,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final String TEMP_NICKNAME_HEADER = "PLG_";
     private final int TEMP_NICKNAME_LENGTH = 10;
 
-    private final MemberAdaptor memberAdaptor;
+    private final MemberRepository memberRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -54,17 +58,17 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         log.info("email={}", email);
 
         String username = registrationId + "_" + socialId;
-        Optional<Member> targetMember = memberAdaptor.queryByUsername(username)
+        Optional<Member> targetMember = memberRepository.findByUsername(username);
         Member member = targetMember.orElseGet(() -> signupSocialMember(username, email, profileImageUrl));
 
         return new CustomOAuthUser(member,
-                Collections.singleton(new SimpleGrantedAuthority(member.getRole().getKey())),
+                Collections.singleton(new SimpleGrantedAuthority(member.getRole().getName())),
                 attributes);
     }
 
     private Member signupSocialMember(String username, String email, String profileImageUrl) {
         //todo generate UUID random nickname
-//        String nickname = TEMP_NICKNAME_HEADER +
+        String nickname = TEMP_NICKNAME_HEADER;
         Member member = Member.builder()
                 .username(username)
                 .nickname(nickname)
