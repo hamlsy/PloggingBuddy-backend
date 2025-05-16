@@ -1,7 +1,9 @@
 package com.ploggingbuddy.presentation.gathering.controller;
 
 import com.ploggingbuddy.application.gathering.CreateGatheringUseCase;
+import com.ploggingbuddy.domain.member.entity.Member;
 import com.ploggingbuddy.presentation.gathering.dto.request.PostGatheringPostDto;
+import com.ploggingbuddy.security.aop.CurrentMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,8 +18,8 @@ public class GatheringController {
     private final CreateGatheringUseCase createGatheringUseCase;
 
     @PostMapping
-    public ResponseEntity<void> postNewGathering(
-            @UserID userId, //TODO 추후 jwt 토큰 처리방식 적용
+    public ResponseEntity<Void> postNewGathering(
+            @CurrentMember Member member,
             @RequestBody PostGatheringPostDto requestBody
             ){
         createGatheringUseCase.execute(requestBody, member.getId());
