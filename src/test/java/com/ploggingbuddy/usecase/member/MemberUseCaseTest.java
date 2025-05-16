@@ -6,6 +6,7 @@ import com.ploggingbuddy.application.member.UpdateMemberDescriptionUseCase;
 import com.ploggingbuddy.application.member.UpdateMemberNicknameUseCase;
 import com.ploggingbuddy.domain.member.entity.Member;
 import com.ploggingbuddy.domain.member.repository.MemberRepository;
+import com.ploggingbuddy.global.vo.Address;
 import com.ploggingbuddy.presentation.member.dto.request.MemberRequest;
 import com.ploggingbuddy.presentation.member.dto.response.MemberResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -46,11 +47,14 @@ public class MemberUseCaseTest {
     }
 
     private Member createTestMember() {
+        Address address = new Address(
+                "testDetailAddress", 1.0, 1.0
+        );
         return Member.builder()
                 .username("testUser")
                 .nickname("testNickname")
                 .description("testDescription")
-                .address("testAddress")
+                .address(address)
                 .email("testEmail")
                 .profileImageUrl("testProfileImageUrl")
                 .build();
@@ -64,16 +68,31 @@ public class MemberUseCaseTest {
                 .nickname("newNickname")
                 .build();
 
-        MemberRequest.UpdateNickname illegalRequest = MemberRequest.UpdateNickname.builder()
-                .nickname("")
-                .build();
-
         //when
         updateMemberNicknameUseCase.execute(member, request);
 
         //then
         assertEquals("newNickname", member.getNickname());
 
+    }
+
+    @Test
+    @DisplayName("update member address")
+    public void updateMemberAddressUseCaseTest() {
+        //given
+        MemberRequest.UpdateAddress request = MemberRequest.UpdateAddress.builder()
+                .detailAddress(
+                        "newDetailAddress"
+                )
+                .latitude(2.0)
+                .latitude(2.0)
+                .build();
+
+        //when
+        updateMemberAddressUseCase.execute(member, request);
+
+        //then
+        assertEquals(2.0, member.getAddress().getLatitude());
     }
 
     @Test

@@ -14,7 +14,7 @@ public class MemberResponse {
 
     private String nickname;
     private String description;
-    private String address;
+    private String detailAddress;
     private String profileImageUrl;
     // 작성한 모임
     // 참석 예정인 모임
@@ -23,7 +23,7 @@ public class MemberResponse {
         return MemberResponse.builder()
                 .nickname(member.getNickname())
                 .description(member.getDescription())
-                .address(member.getAddress())
+                .detailAddress(member.getAddress().getDetailAddress())
                 .profileImageUrl(member.getProfileImageUrl())
                 .build();
     }

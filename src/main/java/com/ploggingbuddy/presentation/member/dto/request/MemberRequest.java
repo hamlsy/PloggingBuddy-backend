@@ -28,9 +28,9 @@ public class MemberRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class UpdateAddress {
+        private String detailAddress;
         private double latitude;
         private double longitude;
-        private String detailAddress;
     }
 
 }
