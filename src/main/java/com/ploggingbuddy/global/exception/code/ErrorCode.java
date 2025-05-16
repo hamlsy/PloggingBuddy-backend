@@ -11,7 +11,10 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode implements PloggingBuddyErrorCode{
 
     // 400 BAD REQUEST
-    INVALID_POST_ID(HttpStatus.BAD_REQUEST, 400, "모임 글 id가 올바르지 않습니다.");
+    INVALID_POST_ID(HttpStatus.BAD_REQUEST, 400, "모임 글 id가 올바르지 않습니다."),
+
+    // 403 forbidden
+    FORBIDDEN_EDIT_POST(HttpStatus.FORBIDDEN, 403, "모임 글 수정 권한이 없는 유저입니다.");
 
 
     @JsonIgnore
