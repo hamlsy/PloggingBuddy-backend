@@ -46,7 +46,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    private String address;
+    private String detailAddress;
+    private double latitude;
+    private double longitude;
 
     private String profileImageUrl;
 
@@ -72,8 +74,10 @@ public class Member extends BaseTimeEntity implements UserDetails {
         this.description = description;
     }
 
-    public void updateAddress(String address) {
-        this.address = address;
+    public void updateAddress(String detailAddress, double latitude, double longitude) {
+        this.detailAddress = detailAddress;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
 }

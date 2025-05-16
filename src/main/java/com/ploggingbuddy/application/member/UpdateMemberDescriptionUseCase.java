@@ -17,7 +17,7 @@ public class UpdateMemberDescriptionUseCase {
     private final MemberService memberService;
 
     public void execute(Member member, MemberRequest.UpdateDescription request) {
-        memberService.updateNickname(member, request.getDescription());
+        memberService.updateDescription(member, request.getDescription());
     }
 
 

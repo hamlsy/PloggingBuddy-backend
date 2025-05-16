@@ -23,8 +23,8 @@ public class MemberService {
         member.updateDescription(description);
     }
 
-    public void updateAddress(Member member, String address) {
-        member.updateAddress(address);
+    public void updateAddress(Member member, String detailAddress, Double latitude, Double longitude) {
+        member.updateAddress(detailAddress, latitude, longitude);
     }
 
 }

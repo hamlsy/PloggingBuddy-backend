@@ -17,7 +17,8 @@ public class UpdateMemberAddressUseCase {
     private final MemberService memberService;
 
     public void execute(Member member, MemberRequest.UpdateAddress request) {
-        memberService.updateNickname(member, request.getAddress());
+        memberService.updateAddress(member, request.getDetailAddress()
+                , request.getLatitude(), request.getLongitude());
     }
 
 }
