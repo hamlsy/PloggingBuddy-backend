@@ -5,7 +5,7 @@ import com.ploggingbuddy.domain.member.entity.Member;
 import com.ploggingbuddy.domain.member.repository.MemberRepository;
 import com.ploggingbuddy.global.exception.base.InternalServerErrorException;
 import com.ploggingbuddy.global.exception.code.ErrorCode;
-import com.ploggingbuddy.presentation.enrollment.dto.Enrollment;
+import com.ploggingbuddy.presentation.enrollment.dto.EnrollmentData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +24,13 @@ public class EnrollmentService {
         enrollmentRepository.save(enrollment);
     }
 
-    public List<Enrollment> getEnrollmentList(Long postId) {
+    public List<EnrollmentData> getEnrollmentList(Long postId) {
         return enrollmentRepository.findAllByPostId(postId)
                 .stream()
                 .map(enrollment -> {
                     Member member = memberRepository.findById(enrollment.getMemberId())
                             .orElseThrow(() -> new InternalServerErrorException(ErrorCode.INTERNAL_SERVER_ERROR));
-                    return new Enrollment(member.getId(), member.getNickname(), member.getProfileImageUrl());
+                    return new EnrollmentData(member.getId(), member.getNickname(), member.getProfileImageUrl());
                 })
                 .toList();
     }

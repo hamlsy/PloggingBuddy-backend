@@ -1,6 +1,6 @@
 package com.ploggingbuddy.presentation.enrollment.dto;
 
-public record Enrollment(
+public record EnrollmentData(
         Long enrolledMemberId,
         String name,
         String profilePictureUrl
