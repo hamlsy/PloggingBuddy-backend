@@ -9,6 +9,7 @@ import com.ploggingbuddy.presentation.member.dto.request.MemberRequest;
 import com.ploggingbuddy.security.aop.CurrentMember;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public class MemberController {
 
     @Operation(summary = "닉네임 수정", description = "회원 닉네임을 수정합니다.")
     @PostMapping("/nickname")
-    public ResponseEntity<?> updateNickname(@CurrentMember Member member, @RequestBody MemberRequest.UpdateNickname request) {
+    public ResponseEntity<?> updateNickname(@CurrentMember Member member, @RequestBody @Valid MemberRequest.UpdateNickname request) {
         updateMemberNicknameUseCase.execute(member, request);
         return ResponseEntity.ok("Nickname updated successfully.");
     }

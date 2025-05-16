@@ -1,12 +1,14 @@
 package com.ploggingbuddy.presentation.member.dto.request;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class MemberRequest {
 
     @Data
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class UpdateNickname {
@@ -14,6 +16,7 @@ public class MemberRequest {
     }
 
     @Data
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class UpdateDescription {
@@ -21,6 +24,7 @@ public class MemberRequest {
     }
 
     @Data
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class UpdateAddress {
