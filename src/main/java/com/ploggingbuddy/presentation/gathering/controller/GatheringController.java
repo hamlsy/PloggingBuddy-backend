@@ -1,8 +1,10 @@
 package com.ploggingbuddy.presentation.gathering.controller;
 
 import com.ploggingbuddy.application.gathering.CreateGatheringUseCase;
+import com.ploggingbuddy.application.gathering.UpdatePostStatusAsDeletedUseCase;
 import com.ploggingbuddy.domain.member.entity.Member;
 import com.ploggingbuddy.presentation.gathering.dto.request.PostGatheringPostDto;
+import com.ploggingbuddy.presentation.gathering.dto.request.UpdatePostStatusAsDeletedDto;
 import com.ploggingbuddy.security.aop.CurrentMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +18,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class GatheringController {
     private final CreateGatheringUseCase createGatheringUseCase;
+    private final UpdatePostStatusAsDeletedUseCase updatePostStatusAsDeletedUseCase;
 
-    @PostMapping
+    @PostMapping("/new")
     public ResponseEntity<Void> postNewGathering(
             @CurrentMember Member member,
             @RequestBody PostGatheringPostDto requestBody
-            ){
+    ) {
         createGatheringUseCase.execute(requestBody, member.getId());
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/delete")
+    public ResponseEntity<Void> updateGatheringAsDeleted(
+            @CurrentMember Member member,
+            @RequestBody UpdatePostStatusAsDeletedDto requestBody
+    ) {
+        updatePostStatusAsDeletedUseCase.execute(requestBody, member.getId());
+        return ResponseEntity.ok().build();
+    }
+
 }
