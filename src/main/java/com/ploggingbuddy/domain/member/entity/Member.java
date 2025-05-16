@@ -1,11 +1,11 @@
 package com.ploggingbuddy.domain.member.entity;
 
 import com.ploggingbuddy.domain.auditing.entity.BaseTimeEntity;
+import com.ploggingbuddy.global.vo.Address;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,30 +25,45 @@ import java.util.Collections;
                 @Index(name = "idx_member_username", columnList = "username"),
         }
 )
-public class Member extends BaseTimeEntity implements UserDetails {
+public class Member extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String username;
 
+    @Column(nullable = false)
+    @NotBlank(message = "닉네임은 필수입니다.")
     private String nickname;
 
     private String email;
+
+    @Lob
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
+    @Embedded
+    @Builder.Default
+    private Address address = new Address();;
 
     private String profileImageUrl;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(this.role.getName()));
+    //business
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    @Override
-    public String getPassword() {
-        return "";
+    public void updateDescription(String description) {
+        this.description = description;
     }
+
+    public void updateAddress(Address address) {
+        this.address = address;
+    }
+
 }

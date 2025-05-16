@@ -1,6 +1,7 @@
 package com.ploggingbuddy.security.service;
 
 import com.ploggingbuddy.domain.member.adaptor.MemberAdaptor;
+import com.ploggingbuddy.security.vo.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +15,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return memberAdaptor.queryByUsername(username);
+        return new CustomUserDetails(memberAdaptor.queryByUsername(username));
     }
 }
