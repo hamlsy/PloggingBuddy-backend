@@ -46,7 +46,11 @@ public class Gathering {
         this.postStatus = postStatus;
     }
 
-    public Gathering(Long leadUserId, String gatheringName, String content, Long participantNumberMax, String spotName, Float spotLatitude, Float spotLongitude) {
+    public void updateParticipantMaxNumber(Long participantNumberMax){
+        this.participantMaxNumber = participantNumberMax;
+    }
+
+    public Gathering(Long leadUserId, String gatheringName, String content, Long participantMaxNumber, String spotName, Float spotLatitude, Float spotLongitude) {
         this.leadUserId = leadUserId;
         this.gatheringName = gatheringName;
         this.content = content;

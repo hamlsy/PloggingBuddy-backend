@@ -29,6 +29,16 @@ public class GatheringService {
 
     }
 
+    // 인원 수정
+    public void updatePostGatheringAmount(Long postId, Long participantMaxNumber, Long memberId) {
+        Gathering gathering = getGatheringPost(postId);
+        validateWriteUser(memberId, gathering);
+        if(gathering.getParticipantMaxNumber() > participantMaxNumber) {
+            throw new BadRequestException(ErrorCode.INVALID_UPDATE_GATHERING_AMOUNT_SIZE);
+        }
+        gathering.updateParticipantMaxNumber(participantMaxNumber);
+    }
+
     private Gathering getGatheringPost(Long postId) {
         return gatheringRepository.findById(postId)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.INVALID_POST_ID));
