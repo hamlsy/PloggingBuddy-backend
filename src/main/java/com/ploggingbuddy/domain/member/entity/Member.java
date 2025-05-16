@@ -1,6 +1,7 @@
 package com.ploggingbuddy.domain.member.entity;
 
 import com.ploggingbuddy.domain.auditing.entity.BaseTimeEntity;
+import com.ploggingbuddy.global.vo.Address;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -46,9 +47,8 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    private String detailAddress;
-    private double latitude;
-    private double longitude;
+    @Embedded
+    private Address address;
 
     private String profileImageUrl;
 
@@ -74,10 +74,8 @@ public class Member extends BaseTimeEntity implements UserDetails {
         this.description = description;
     }
 
-    public void updateAddress(String detailAddress, double latitude, double longitude) {
-        this.detailAddress = detailAddress;
-        this.latitude = latitude;
-        this.longitude = longitude;
+    public void updateAddress(Address address) {
+        this.address = address;
     }
 
 }

@@ -2,6 +2,7 @@ package com.ploggingbuddy.domain.member.service;
 
 import com.ploggingbuddy.domain.member.entity.Member;
 import com.ploggingbuddy.domain.member.repository.MemberRepository;
+import com.ploggingbuddy.global.vo.Address;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,8 @@ public class MemberService {
         member.updateDescription(description);
     }
 
-    public void updateAddress(Member member, String detailAddress, Double latitude, Double longitude) {
-        member.updateAddress(detailAddress, latitude, longitude);
+    public void updateAddress(Member member, Address address) {
+        member.updateAddress(address);
     }
 
 }
