@@ -2,6 +2,7 @@ package com.ploggingbuddy.domain.member.entity;
 
 import com.ploggingbuddy.domain.auditing.entity.BaseTimeEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,11 +32,18 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String username;
 
     private String nickname;
 
     private String email;
+
+    @Lob
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
+    private String address;
 
     private String profileImageUrl;
 
@@ -51,4 +59,18 @@ public class Member extends BaseTimeEntity implements UserDetails {
     public String getPassword() {
         return "";
     }
+
+    //business
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updateDescription(String description) {
+        this.description = description;
+    }
+
+    public void updateAddress(String address) {
+        this.address = address;
+    }
+
 }
