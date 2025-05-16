@@ -21,9 +21,13 @@ public class GatheringService {
     }
 
     //삭제 처리
-    public void updatePostStatus(Long postId, GatheringStatus postStatus) {
+    public void updatePostStatus(Long postId, GatheringStatus postStatus, Long requestUserId) {
         Gathering gathering = gatheringRepository.findById(postId)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.INVALID_POST_ID));
+
+        if (!gathering.getLeadUserId().equals(requestUserId)) {
+            throw new BadRequestException(ErrorCode.FORBIDDEN_EDIT_POST);
+        }
         gathering.updatePostStatus(postStatus);
 
     }
