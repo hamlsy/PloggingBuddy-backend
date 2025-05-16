@@ -3,6 +3,7 @@ package com.ploggingbuddy.domain.gathering.service;
 import com.ploggingbuddy.domain.gathering.entity.Gathering;
 import com.ploggingbuddy.domain.gathering.entity.GatheringStatus;
 import com.ploggingbuddy.domain.gathering.repository.GatheringRepository;
+import com.ploggingbuddy.application.validator.GatheringValidator;
 import com.ploggingbuddy.global.exception.base.BadRequestException;
 import com.ploggingbuddy.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class GatheringService {
     private final GatheringRepository gatheringRepository;
+    private final GatheringValidator gatheringValidator;
 
     // 신규 생성
     public void save(Gathering gathering) {
@@ -24,7 +26,7 @@ public class GatheringService {
     public void updatePostStatus(Long postId, GatheringStatus postStatus, Long requestUserId) {
         Gathering gathering = getGatheringPost(postId);
 
-        validateWriteUser(requestUserId, gathering);
+        gatheringValidator.validateWriteUser(requestUserId, gathering);
         gathering.updatePostStatus(postStatus);
 
     }
@@ -32,8 +34,8 @@ public class GatheringService {
     // 인원 수정
     public void updatePostGatheringAmount(Long postId, Long participantMaxNumber, Long memberId) {
         Gathering gathering = getGatheringPost(postId);
-        validateWriteUser(memberId, gathering);
-        if(gathering.getParticipantMaxNumber() > participantMaxNumber) {
+        gatheringValidator.validateWriteUser(memberId, gathering);
+        if (gathering.getParticipantMaxNumber() > participantMaxNumber) {
             throw new BadRequestException(ErrorCode.INVALID_UPDATE_GATHERING_AMOUNT_SIZE);
         }
         gathering.updateParticipantMaxNumber(participantMaxNumber);
@@ -44,9 +46,4 @@ public class GatheringService {
                 .orElseThrow(() -> new BadRequestException(ErrorCode.INVALID_POST_ID));
     }
 
-    private void validateWriteUser(Long requestUserId, Gathering gathering) {
-        if (!gathering.getLeadUserId().equals(requestUserId)) {
-            throw new BadRequestException(ErrorCode.FORBIDDEN_EDIT_POST);
-        }
-    }
 }
