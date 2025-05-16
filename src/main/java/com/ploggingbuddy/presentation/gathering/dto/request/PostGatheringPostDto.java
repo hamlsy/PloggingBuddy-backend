@@ -5,6 +5,8 @@ public record PostGatheringPostDto(
         String content,
         Long participantNumberMin,
         Long participantNumberMax,
-        String spotName
+        String spotName,
+        Float spotLongitude,
+        Float spotLatitude
 ) {
 }

@@ -17,9 +17,10 @@ public class CreateGatheringUseCase {
         Gathering gathering = new Gathering(userId,
                 postGatheringPostDto.title(),
                 postGatheringPostDto.content(),
-                postGatheringPostDto.participantNumberMin(),
                 postGatheringPostDto.participantNumberMax(),
-                postGatheringPostDto.spotName());
+                postGatheringPostDto.spotName(),
+                postGatheringPostDto.spotLatitude(),
+                postGatheringPostDto.spotLongitude());
         gatheringService.save(gathering);
     }
 }

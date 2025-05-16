@@ -27,12 +27,13 @@ public class Gathering {
 
     private String gatheringName;
 
-    private Long participantNumberMin;
+    private Long participantMaxNumber;
 
-    private Long participantNumberMax;
-
-    // TODO 추후 프론트와 주소관련 로직 결정 후 반영 예정
     private String spotName;
+
+    private Float spotLatitude;
+
+    private Float spotLongitude;
 
     private String content;
 
@@ -45,14 +46,15 @@ public class Gathering {
         this.postStatus = postStatus;
     }
 
-    public Gathering(Long leadUserId, String gatheringName, String content, Long participantNumberMin, Long participantNumberMax, String spotName) {
+    public Gathering(Long leadUserId, String gatheringName, String content, Long participantNumberMax, String spotName, Float spotLatitude, Float spotLongitude) {
         this.leadUserId = leadUserId;
         this.gatheringName = gatheringName;
         this.content = content;
-        this.participantNumberMin = participantNumberMin;
-        this.participantNumberMax = participantNumberMax;
+        this.participantMaxNumber = participantMaxNumber;
         this.spotName = spotName;
         this.createdAt = LocalDateTime.now();
+        this.spotLatitude = spotLatitude;
+        this.spotLongitude = spotLongitude;
     }
 
 }
