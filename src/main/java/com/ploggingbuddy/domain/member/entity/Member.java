@@ -5,10 +5,7 @@ import com.ploggingbuddy.global.vo.Address;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,7 +25,7 @@ import java.util.Collections;
                 @Index(name = "idx_member_username", columnList = "username"),
         }
 )
-public class Member extends BaseTimeEntity implements UserDetails {
+public class Member extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,22 +45,13 @@ public class Member extends BaseTimeEntity implements UserDetails {
     private String description;
 
     @Embedded
-    private Address address;
+    @Builder.Default
+    private Address address = new Address();;
 
     private String profileImageUrl;
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(this.role.getName()));
-    }
-
-    @Override
-    public String getPassword() {
-        return "";
-    }
 
     //business
     public void updateNickname(String nickname) {
