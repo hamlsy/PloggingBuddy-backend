@@ -41,7 +41,7 @@ public class Gathering {
 
     private GatheringStatus postStatus;
 
-    public void updatePostStatus(Long postId, GatheringStatus postStatus){
+    public void updatePostStatus(GatheringStatus postStatus){
         this.postStatus = postStatus;
     }
 

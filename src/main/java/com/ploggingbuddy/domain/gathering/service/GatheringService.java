@@ -24,7 +24,7 @@ public class GatheringService {
     public void updatePostStatus(Long postId, GatheringStatus postStatus) {
         Gathering gathering = gatheringRepository.findById(postId)
                 .orElseThrow(() -> new BadRequestException(ErrorCode.INVALID_POST_ID));
-        gathering.updatePostStatus(postId, postStatus);
+        gathering.updatePostStatus(postStatus);
 
     }
 }
