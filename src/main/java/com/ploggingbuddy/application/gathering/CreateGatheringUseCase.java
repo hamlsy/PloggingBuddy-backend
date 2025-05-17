@@ -1,9 +1,10 @@
 package com.ploggingbuddy.application.gathering;
 
-import com.ploggingbuddy.global.annotation.usecase.UseCase;
-import com.ploggingbuddy.presentation.gathering.dto.request.PostGatheringPostDto;
 import com.ploggingbuddy.domain.gathering.entity.Gathering;
 import com.ploggingbuddy.domain.gathering.service.GatheringService;
+import com.ploggingbuddy.domain.postImage.service.PostImageService;
+import com.ploggingbuddy.global.annotation.usecase.UseCase;
+import com.ploggingbuddy.presentation.gathering.dto.request.PostGatheringPostDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CreateGatheringUseCase {
     private final GatheringService gatheringService;
+    private final PostImageService postImageService;
 
     public void execute(PostGatheringPostDto postGatheringPostDto, Long userId) {
         Gathering gathering = new Gathering(userId,
@@ -21,6 +23,10 @@ public class CreateGatheringUseCase {
                 postGatheringPostDto.spotName(),
                 postGatheringPostDto.spotLatitude(),
                 postGatheringPostDto.spotLongitude());
-        gatheringService.save(gathering);
+        Long postId = gatheringService.save(gathering).getId();
+
+        if (postGatheringPostDto.imageList() != null && !postGatheringPostDto.imageList().isEmpty()) {
+            postImageService.saveAll(postGatheringPostDto.imageList(), postId);
+        }
     }
 }
