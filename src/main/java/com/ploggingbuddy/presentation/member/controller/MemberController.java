@@ -27,6 +27,7 @@ public class MemberController {
     private final UpdateMemberAddressUseCase updateMemberAddressUseCase;
     private final GetMyInfoUseCase getMyInfoUseCase;
 
+    //test
     @GetMapping("/test")
     public ResponseEntity<?> testMember(@CurrentMember Member member) {
         return ResponseEntity.ok(member.getNickname() + "" + member.getEmail());
