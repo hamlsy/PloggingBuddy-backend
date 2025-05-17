@@ -28,9 +28,9 @@ public class Gathering {
 
     private String spotName;
 
-    private Float spotLatitude;
+    private Double spotLatitude;
 
-    private Float spotLongitude;
+    private Double spotLongitude;
 
     private String content;
 
@@ -48,7 +48,7 @@ public class Gathering {
         this.participantMaxNumber = participantNumberMax;
     }
 
-    public Gathering(Long leadUserId, String gatheringName, String content, Long participantMaxNumber, String spotName, Float spotLatitude, Float spotLongitude) {
+    public Gathering(Long leadUserId, String gatheringName, String content, Long participantMaxNumber, String spotName, Double spotLatitude, Double spotLongitude) {
         this.leadUserId = leadUserId;
         this.gatheringName = gatheringName;
         this.content = content;
