@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Adaptor
 @RequiredArgsConstructor
@@ -23,6 +25,10 @@ public class MemberAdaptor {
     public Member queryById(Long id) {
         return memberRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("id를 찾을 수 없음: " + id));
+    }
+
+    public List<Member> queryAllByIds(List<Long> ids) {
+        return memberRepository.findAllByIdIn(ids);
     }
 
 }
