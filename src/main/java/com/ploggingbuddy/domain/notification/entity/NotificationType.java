@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 public enum NotificationType {
 
     MEMBER_JOINED("모임에 참가했습니다."),
-    NEW_MEMBER_JOINED("새로운 참가자가 모임에 참가했습니다."),
     STATUS_CHANGED("모임에 참여되었습니다.");
 
     private final String defaultMessage;
