@@ -12,6 +12,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByUsername(String username);
 
-    @Query("select m from member m where m.id In :ids")
+    @Query("select m from Member m where m.id In :ids")
     List<Member> findAllByIdIn(@Param("ids") List<Long> ids);
 }
