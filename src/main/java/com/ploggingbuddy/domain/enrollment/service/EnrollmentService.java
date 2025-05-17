@@ -31,7 +31,7 @@ public class EnrollmentService {
                 .orElseThrow(() -> new BadRequestException(ErrorCode.INVALID_POST_ID));
 
         // 현재 신청 인원 수 확인
-        long currentCount = enrollmentRepository.countByPostId(postId);
+        long currentCount = getEnrolledCount(postId);
 
         // 최대 신청 인원 체크
         if (currentCount >= gathering.getParticipantMaxNumber()) {
@@ -61,6 +61,10 @@ public class EnrollmentService {
                     return new EnrollmentData(member.getId(), member.getNickname(), member.getProfileImageUrl());
                 })
                 .toList();
+    }
+
+    public Long getEnrolledCount(Long postId){
+        return enrollmentRepository.countByPostId(postId);
     }
 
 }

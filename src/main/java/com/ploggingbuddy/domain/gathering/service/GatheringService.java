@@ -22,11 +22,20 @@ public class GatheringService {
         return gatheringRepository.save(gathering);
     }
 
-    //삭제 처리
-    public void updatePostStatus(Long postId, GatheringStatus postStatus, Long requestUserId) {
+    // 게시글 상태 수정
+    // 유저에 의해 조기 마감시 GatheringStatus 값을 null로 전달
+    public void updatePostStatus(Long postId, GatheringStatus postStatus, Long requestUserId, Long enrolledCount) {
         Gathering gathering = getGatheringPost(postId);
 
         gatheringValidator.validateWriteUser(requestUserId, gathering);
+
+        if (postStatus == null) {
+            if (gathering.getParticipantMaxNumber() > enrolledCount) {
+                gathering.updatePostStatus(GatheringStatus.GATHERING_PENDING);
+            } else if(gathering.getParticipantMaxNumber()==0) {
+                gathering.updatePostStatus(GatheringStatus.GATHERING_FAILED);
+            }
+        }
         gathering.updatePostStatus(postStatus);
 
     }

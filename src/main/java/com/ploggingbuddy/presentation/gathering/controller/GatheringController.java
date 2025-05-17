@@ -1,6 +1,7 @@
 package com.ploggingbuddy.presentation.gathering.controller;
 
 import com.ploggingbuddy.application.gathering.CreateGatheringUseCase;
+import com.ploggingbuddy.application.gathering.FinishGatheringUseCase;
 import com.ploggingbuddy.application.gathering.UpdateGatheringAmountUseCase;
 import com.ploggingbuddy.application.gathering.UpdatePostStatusAsDeletedUseCase;
 import com.ploggingbuddy.domain.member.entity.Member;
@@ -22,6 +23,7 @@ public class GatheringController {
     private final CreateGatheringUseCase createGatheringUseCase;
     private final UpdatePostStatusAsDeletedUseCase updatePostStatusAsDeletedUseCase;
     private final UpdateGatheringAmountUseCase updateGatheringAmountUseCase;
+    private final FinishGatheringUseCase finishGatheringUseCase;
 
     @PostMapping("/new")
     @Operation(summary = "모집 게시글 작성", description = "새 모집 게시글을 작성하는 api입니다.")
@@ -53,4 +55,15 @@ public class GatheringController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/gathering-finish/{postId}")
+    @Operation(summary = "모집 조기 마감", description = "모집 중인 게시글을 조기 마감하는 api입니다.")
+    public ResponseEntity<Void> finishGathering(
+            @CurrentMember Member member,
+            @PathVariable Long postId
+    ) {
+        finishGatheringUseCase.execute(postId, member.getId());
+        return ResponseEntity.ok().build();
+    }
+
+    //모임 강행할지 결정api
 }
