@@ -32,6 +32,7 @@ public class Gathering {
 
     private Double spotLongitude;
 
+    @Lob
     private String content;
 
     @CreationTimestamp
