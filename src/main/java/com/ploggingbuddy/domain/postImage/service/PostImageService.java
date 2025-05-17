@@ -23,4 +23,8 @@ public class PostImageService {
         postImageRepository.saveAll(postImages);
     }
 
+    public void deletePreviousImages(Long postId) {
+        postImageRepository.deleteByPostId(postId);
+    }
+
 }
