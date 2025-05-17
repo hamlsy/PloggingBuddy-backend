@@ -1,9 +1,6 @@
 package com.ploggingbuddy.domain.gathering.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,13 +37,14 @@ public class Gathering {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    private GatheringStatus postStatus;
+    @Enumerated(EnumType.STRING)
+    private GatheringStatus postStatus = GatheringStatus.GATHERING;
 
-    public void updatePostStatus(GatheringStatus postStatus){
+    public void updatePostStatus(GatheringStatus postStatus) {
         this.postStatus = postStatus;
     }
 
-    public void updateParticipantMaxNumber(Long participantNumberMax){
+    public void updateParticipantMaxNumber(Long participantNumberMax) {
         this.participantMaxNumber = participantNumberMax;
     }
 

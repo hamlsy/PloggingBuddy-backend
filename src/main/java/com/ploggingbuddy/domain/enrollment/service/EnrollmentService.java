@@ -3,6 +3,7 @@ package com.ploggingbuddy.domain.enrollment.service;
 import com.ploggingbuddy.domain.enrollment.entity.Enrollment;
 import com.ploggingbuddy.domain.enrollment.repository.EnrollmentRepository;
 import com.ploggingbuddy.domain.gathering.entity.Gathering;
+import com.ploggingbuddy.domain.gathering.entity.GatheringStatus;
 import com.ploggingbuddy.domain.gathering.repository.GatheringRepository;
 import com.ploggingbuddy.domain.member.entity.Member;
 import com.ploggingbuddy.domain.member.repository.MemberRepository;
@@ -34,7 +35,11 @@ public class EnrollmentService {
 
         // 최대 신청 인원 체크
         if (currentCount >= gathering.getParticipantMaxNumber()) {
-            throw new BadRequestException(ErrorCode.EXCEED_PARTICIPANT_LIMIT);
+            gathering.updatePostStatus(GatheringStatus.GATHERING_CONFIRMED);
+
+            if (currentCount > gathering.getParticipantMaxNumber()) {
+                throw new BadRequestException(ErrorCode.EXCEED_PARTICIPANT_LIMIT);
+            }
         }
 
         // 중복 신청 경우
