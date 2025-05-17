@@ -32,9 +32,7 @@ public class NotificationService {
     public void notifyMemberJoined(Gathering gathering, Member newMember) {
         log.info("{} 모임에 참가했습니다. 참가자: {}", gathering.getGatheringName(), newMember.getNickname());
 
-        List<Long> memberIds = enrollmentAdaptor.queryByGatheringId(gathering.getId())
-                .stream().map(Enrollment::getMemberId)
-                .toList();
+        List<Long> memberIds = getEnrolledMemberIds(gathering);
 
         List<Member> members = memberAdaptor.queryAllByIds(memberIds);
         for (Member member : members) {
@@ -47,6 +45,31 @@ public class NotificationService {
 
         }
 
+    }
+
+    @Async
+    public void notifyGatheringEnrolled(Gathering gathering) {
+        log.info("{} 모임에 참여되었습니다.", gathering.getGatheringName());
+
+        List<Long> memberIds = getEnrolledMemberIds(gathering);
+
+        List<Member> members = memberAdaptor.queryAllByIds(memberIds);
+        for (Member member : members) {
+            String message = "'" + gathering.getGatheringName() + "' 모임에 참여되었습니다.";
+            Notification notification = Notification.create(member, gathering, message, NotificationType.STATUS_CHANGED);
+            notificationRepository.save(notification);
+
+            //알림 전송
+            notificationSender.sendNotification(notification);
+
+        }
+
+    }
+
+    private List<Long> getEnrolledMemberIds(Gathering gathering) {
+        return enrollmentAdaptor.queryByGatheringId(gathering.getId())
+                .stream().map(Enrollment::getMemberId)
+                .toList();
     }
 
 }
