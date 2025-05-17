@@ -38,4 +38,14 @@ public class Notification extends BaseTimeEntity {
     @Column(nullable = false)
     private boolean isRead;
 
+    public static Notification create(Member member, Gathering gathering, String message, NotificationType notificationType) {
+        return Notification.builder()
+                .member(member)
+                .gathering(gathering)
+                .message(message)
+                .notificationType(notificationType)
+                .isRead(false)
+                .build();
+    }
+
 }
