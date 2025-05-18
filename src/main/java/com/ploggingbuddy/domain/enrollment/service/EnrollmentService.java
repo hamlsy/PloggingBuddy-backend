@@ -12,11 +12,13 @@ import com.ploggingbuddy.global.exception.base.InternalServerErrorException;
 import com.ploggingbuddy.global.exception.code.ErrorCode;
 import com.ploggingbuddy.presentation.enrollment.dto.EnrollmentData;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -33,23 +35,25 @@ public class EnrollmentService {
         // 현재 신청 인원 수 확인
         long currentCount = getEnrolledCount(postId);
 
-        // 최대 신청 인원 체크
-        if (currentCount >= gathering.getParticipantMaxNumber()) {
-            gathering.updatePostStatus(GatheringStatus.GATHERING_CONFIRMED);
-
-            if (currentCount > gathering.getParticipantMaxNumber()) {
-                throw new BadRequestException(ErrorCode.EXCEED_PARTICIPANT_LIMIT);
-            }
-        }
-
         // 중복 신청 경우
         boolean alreadyApplied = enrollmentRepository.existsByPostIdAndMemberId(postId, userId);
         if (alreadyApplied) {
             throw new BadRequestException(ErrorCode.DUPLICATED_ENROLLMENT);
         }
 
-        Enrollment enrollment = new Enrollment(postId, userId);
+        // 최대 신청 인원 체크
+        if (currentCount >= gathering.getParticipantMaxNumber()) {
+            throw new BadRequestException(ErrorCode.EXCEED_PARTICIPANT_LIMIT);
+        }
+
+        log.error("enrolling to postId " + postId);
+        Enrollment enrollment = new Enrollment(userId, postId);
         enrollmentRepository.save(enrollment);
+
+        currentCount = getEnrolledCount(postId);
+        if (currentCount == gathering.getParticipantMaxNumber()) {
+            gathering.updatePostStatus(GatheringStatus.GATHERING_CONFIRMED);
+        }
     }
 
     public List<EnrollmentData> getEnrollmentList(Long postId) {
@@ -63,7 +67,7 @@ public class EnrollmentService {
                 .toList();
     }
 
-    public Long getEnrolledCount(Long postId){
+    public Long getEnrolledCount(Long postId) {
         return enrollmentRepository.countByPostId(postId);
     }
 
