@@ -65,7 +65,8 @@ public class GatheringController {
     }
 
     //모임 강행할지 결정 api
-    @PostMapping("/status-decision")
+    @PutMapping("/status-decision")
+    @Operation(summary = "모임 강행 여부 선택", description = "조기마감시킨 모임을 강행할지 결정하는 api입니다.")
     public ResponseEntity<Void> decideProceedOrNot(
             @CurrentMember Member member,
             @RequestBody UpdatePendingPostStatusDto requestBody
