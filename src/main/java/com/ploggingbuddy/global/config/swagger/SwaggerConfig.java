@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
-    private static final String LICENSE_NAME = "KoSpot";
+    private static final String LICENSE_NAME = "PloggingBuddy";
     private static final String SWAGGER_VERSION = "v0.0.1";
-    private static final String SWAGGER_TITLE = "KoSpot Server Api";
-    private static final String SWAGGER_DESCRIPTION = "KoSpot Server API Document";
+    private static final String SWAGGER_TITLE = "PloggingBuddy Server Api";
+    private static final String SWAGGER_DESCRIPTION = "PloggingBuddy Server API Document";
 
-    private static final String GITHUB_URL = "https://github.com/hamlsy/KoSpot-backend";
+    private static final String GITHUB_URL = "https://github.com/ploggingBuddy/PloggingBuddy-backend.git";
 
     @Bean
     public OpenAPI api(){
