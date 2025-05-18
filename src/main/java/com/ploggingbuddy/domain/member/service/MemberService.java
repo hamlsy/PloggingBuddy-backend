@@ -20,10 +20,6 @@ public class MemberService {
         member.updateNickname(nickname);
     }
 
-    public void updateDescription(Member member, String description) {
-        member.updateDescription(description);
-    }
-
     public void updateAddress(Member member, Address address) {
         member.updateAddress(address);
     }
