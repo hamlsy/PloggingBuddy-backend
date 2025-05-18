@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -19,8 +21,9 @@ public class GatheringResponse {
     private String content;
     private String postStatus;
     private String detailAddress;
+    private List<String> imageUrlList;
 
-    public static GatheringResponse from(Gathering gathering, Long participantCurrentNumber) {
+    public static GatheringResponse from(Gathering gathering, Long participantCurrentNumber, List<String> imageUrlList) {
         return GatheringResponse.builder()
                 .postId(gathering.getId())
                 .gatheringName(gathering.getGatheringName())
@@ -28,6 +31,7 @@ public class GatheringResponse {
                 .participantMaxNumber(gathering.getParticipantMaxNumber())
                 .detailAddress(gathering.getSpotName())
                 .content(gathering.getContent())
+                .imageUrlList(imageUrlList)
                 .postStatus(gathering.getPostStatus().name())
                 .build();
     }
