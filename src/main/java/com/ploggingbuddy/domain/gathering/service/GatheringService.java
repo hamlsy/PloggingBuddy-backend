@@ -30,14 +30,14 @@ public class GatheringService {
         gatheringValidator.validateWriteUser(requestUserId, gathering);
 
         if (postStatus == null) {
-            if (gathering.getParticipantMaxNumber() > enrolledCount) {
-                gathering.updatePostStatus(GatheringStatus.GATHERING_PENDING);
-            } else if(gathering.getParticipantMaxNumber()==0) {
+            if (enrolledCount == 0) {
                 gathering.updatePostStatus(GatheringStatus.GATHERING_FAILED);
+            } else if (gathering.getParticipantMaxNumber() > enrolledCount) {
+                gathering.updatePostStatus(GatheringStatus.GATHERING_PENDING);
             }
+        } else {
+            gathering.updatePostStatus(postStatus);
         }
-        gathering.updatePostStatus(postStatus);
-
     }
 
     // 인원 수정
