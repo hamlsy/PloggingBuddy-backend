@@ -3,6 +3,7 @@ package com.ploggingbuddy.usecase.member;
 import com.ploggingbuddy.application.member.GetMyInfoUseCase;
 import com.ploggingbuddy.domain.enrollment.entity.Enrollment;
 import com.ploggingbuddy.domain.enrollment.repository.EnrollmentRepository;
+import com.ploggingbuddy.domain.enrollment.service.EnrollmentService;
 import com.ploggingbuddy.domain.gathering.entity.Gathering;
 import com.ploggingbuddy.domain.gathering.entity.GatheringStatus;
 import com.ploggingbuddy.domain.gathering.repository.GatheringRepository;
@@ -40,6 +41,9 @@ public class GetMyInfoUseCaseTest {
     
     @Autowired
     private GatheringService gatheringService;
+
+    @Autowired
+    private EnrollmentService enrollmentService;
     
 
     private Member testMember;
@@ -68,21 +72,23 @@ public class GetMyInfoUseCaseTest {
 
     private Member createTestMember() {
         Address address = new Address(
-                "서울시 강남구", 37.5665, 126.9780
+                "서울시 강남구", 3, 3
         );
         return Member.builder()
                 .username("testUser")
                 .nickname("testNickname")
                 .address(address)
-                .email("test@example.com")
-                .profileImageUrl("http://example.com/profile.jpg")
                 .build();
     }
 
     private void setupTestData() {
+        // 1. Created gathering - Current user is the leader
         createdGathering = createGathering("Created Gathering", testMember.getId());
+        // Set status to GATHERING (모집 중)
+        createdGathering.updatePostStatus(GatheringStatus.GATHERING);
         gatheringService.save(createdGathering);
 
+        // Create another member for other gatherings
         Member otherMember = Member.builder()
                 .username("otherUser")
                 .nickname("otherNickname")
@@ -90,21 +96,29 @@ public class GetMyInfoUseCaseTest {
                 .build();
         memberRepository.save(otherMember);
         
+        // 2. Participated gathering - Completed gathering that user participated in
         participatedGathering = createGathering("Participated Gathering", otherMember.getId());
+        // Set status to FINISHED (완료된 모임)
+        participatedGathering.updatePostStatus(GatheringStatus.FINISHED);
         gatheringService.save(participatedGathering);
+        
+        // Enroll test member in the participated gathering
+        enrollmentService.saveEnrollment(participatedGathering.getId(), testMember.getId());
 
-        Enrollment enrollment = new Enrollment(testMember.getId(), participatedGathering.getId());
-        enrollmentRepository.save(enrollment);
-
+        // 3. Pending gatherings - Gatherings user applied to but waiting approval
         pendingGathering1 = createGathering("Pending Gathering 1", otherMember.getId());
         pendingGathering2 = createGathering("Pending Gathering 2", otherMember.getId());
+        
+        // Set status to GATHERING_PENDING (대기 중인 모임)
+        pendingGathering1.updatePostStatus(GatheringStatus.GATHERING_PENDING);
+        pendingGathering2.updatePostStatus(GatheringStatus.GATHERING_PENDING);
+        
         gatheringService.save(pendingGathering1);
         gatheringService.save(pendingGathering2);
 
-        Enrollment pendingEnrollment1 = new Enrollment(testMember.getId(), pendingGathering1.getId());
-        Enrollment pendingEnrollment2 = new Enrollment(testMember.getId(), pendingGathering2.getId());
-        enrollmentRepository.save(pendingEnrollment1);
-        enrollmentRepository.save(pendingEnrollment2);
+        // Enroll test member in the pending gatherings
+        enrollmentService.saveEnrollment(pendingGathering1.getId(), testMember.getId());
+        enrollmentService.saveEnrollment(pendingGathering2.getId(), testMember.getId());
     }
 
     private Gathering createGathering(String name, Long leadUserId) {
@@ -116,7 +130,7 @@ public class GetMyInfoUseCaseTest {
                 .spotName("Test Location")
                 .spotLatitude(4.0)
                 .spotLongitude(4.0)
-                .postStatus(GatheringStatus.GATHERING)
+                .postStatus(GatheringStatus.GATHERING) // Default status
                 .build();
     }
 
@@ -134,9 +148,9 @@ public class GetMyInfoUseCaseTest {
         assertEquals(testMember.getProfileImageUrl(), response.getProfileImageUrl());
 
         // Verify gatherings are present in the response
-        assertEquals(2, response.getPendingPosts().size());
-        assertEquals(1, response.getParticipatedPosts().size());
-        assertEquals(1, response.getCreatedPosts().size());
+        assertEquals(2, response.getPendingPosts().size(), "Should have 2 pending gatherings");
+        assertEquals(1, response.getParticipatedPosts().size(), "Should have 1 participated gathering");
+        assertEquals(1, response.getCreatedPosts().size(), "Should have 1 created gathering");
 
         // Verify content of gatherings in each list
         boolean foundPending1 = false;
@@ -146,14 +160,22 @@ public class GetMyInfoUseCaseTest {
             String name = response.getPendingPosts().get(i).getGatheringName();
             if (name.equals("Pending Gathering 1")) {
                 foundPending1 = true;
+                assertEquals("GATHERING_PENDING", response.getPendingPosts().get(i).getPostStatus());
             } else if (name.equals("Pending Gathering 2")) {
                 foundPending2 = true;
+                assertEquals("GATHERING_PENDING", response.getPendingPosts().get(i).getPostStatus());
             }
         }
         
         assertEquals(true, foundPending1, "Pending Gathering 1 should be in the response");
         assertEquals(true, foundPending2, "Pending Gathering 2 should be in the response");
+        
+        // Verify participated gathering
         assertEquals("Participated Gathering", response.getParticipatedPosts().get(0).getGatheringName());
+        assertEquals("FINISHED", response.getParticipatedPosts().get(0).getPostStatus(), "Participated gathering should have FINISHED status");
+        
+        // Verify created gathering
         assertEquals("Created Gathering", response.getCreatedPosts().get(0).getGatheringName());
+        assertEquals("GATHERING", response.getCreatedPosts().get(0).getPostStatus(), "Created gathering should have GATHERING status");
     }
 }

@@ -48,7 +48,7 @@ public class EnrollmentService {
             throw new BadRequestException(ErrorCode.DUPLICATED_ENROLLMENT);
         }
 
-        Enrollment enrollment = new Enrollment(postId, userId);
+        Enrollment enrollment = new Enrollment(userId, postId);
         enrollmentRepository.save(enrollment);
     }
 
