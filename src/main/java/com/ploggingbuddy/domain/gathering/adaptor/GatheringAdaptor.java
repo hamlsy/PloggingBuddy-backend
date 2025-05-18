@@ -22,16 +22,16 @@ public class GatheringAdaptor {
                 .orElseThrow(() -> new IllegalArgumentException("id를 찾을 수 없음: " + id));
     }
 
-    public List<Gathering> queryAllByLeadUserId(Long memberId) {
-        return gatheringRepository.findAllByLeadUserId(memberId);
+    public List<Gathering> queryAllByLeadUserIdOrderByDescLimit3(Long memberId) {
+        return gatheringRepository.findAllByLeadUserIdOrderByDescLimit3(memberId);
     }
 
-    public List<Gathering> queryAllByParticipatedMemberId(Long memberId) {
-        return gatheringRepository.findAllByParticipatedUserId(memberId);
+    public List<Gathering> queryAllByParticipatedMemberIdOrderByDescLimit3(Long memberId) {
+        return gatheringRepository.findAllByParticipatedUserIdOrderByDescLimit3(memberId);
     }
 
-    public List<Gathering> queryAllByPendingMemberId(Long memberId) {
-        return gatheringRepository.findAllByPendingUserId(memberId);
+    public List<Gathering> queryAllByPendingMemberIdOrderByDescLimit3(Long memberId) {
+        return gatheringRepository.findAllByPendingUserIdOrderByDescLimit3(memberId);
     }
 
 }

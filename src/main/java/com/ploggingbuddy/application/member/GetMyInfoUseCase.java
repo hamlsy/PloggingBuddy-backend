@@ -21,9 +21,9 @@ public class GetMyInfoUseCase {
 
     //todo 모임 정보 추가
     public MemberResponse execute(Member member) {
-        List<Gathering> pendingPosts = gatheringAdaptor.queryAllByPendingMemberId(member.getId());
-        List<Gathering> participatedPosts = gatheringAdaptor.queryAllByParticipatedMemberId(member.getId());
-        List<Gathering> createdPosts = gatheringAdaptor.queryAllByLeadUserId(member.getId());
+        List<Gathering> pendingPosts = gatheringAdaptor.queryAllByPendingMemberIdOrderByDescLimit3(member.getId());
+        List<Gathering> participatedPosts = gatheringAdaptor.queryAllByParticipatedMemberIdOrderByDescLimit3(member.getId());
+        List<Gathering> createdPosts = gatheringAdaptor.queryAllByLeadUserIdOrderByDescLimit3(member.getId());
 
         return MemberResponse.from(member, pendingPosts, participatedPosts, createdPosts);
     }
