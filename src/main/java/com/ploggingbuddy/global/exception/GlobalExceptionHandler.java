@@ -1,10 +1,12 @@
 package com.ploggingbuddy.global.exception;
 
 import com.ploggingbuddy.global.exception.base.BadRequestException;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@Hidden
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

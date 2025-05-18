@@ -6,6 +6,7 @@ import com.ploggingbuddy.application.member.UpdateMemberNicknameUseCase;
 import com.ploggingbuddy.domain.member.entity.Member;
 import com.ploggingbuddy.presentation.member.dto.request.MemberRequest;
 import com.ploggingbuddy.presentation.member.dto.response.MemberAddressValidateResponse;
+import com.ploggingbuddy.presentation.member.dto.response.MemberResponse;
 import com.ploggingbuddy.security.aop.CurrentMember;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,13 +35,13 @@ public class MemberController {
 
     @Operation(summary = "내 정보 조회", description = "현재 로그인된 사용자의 정보를 조회합니다.")
     @GetMapping("/me")
-    public ResponseEntity<?> getMyInfo(@CurrentMember Member member) {
+    public ResponseEntity<MemberResponse> getMyInfo(@CurrentMember Member member) {
         return ResponseEntity.ok(getMyInfoUseCase.execute(member));
     }
 
     @Operation(summary = "회원 주소 검증", description = "회원 주소를 검증합니다.")
     @GetMapping("/address/validate")
-    public ResponseEntity<?> validateAddress(@CurrentMember Member member) {
+    public ResponseEntity<MemberAddressValidateResponse> validateAddress(@CurrentMember Member member) {
         return ResponseEntity.ok(MemberAddressValidateResponse.from(member));
     }
 
