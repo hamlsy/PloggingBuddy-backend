@@ -20,10 +20,11 @@ public class GatheringResponse {
     private String postStatus;
     private String detailAddress;
 
-    public static GatheringResponse from(Gathering gathering) {
+    public static GatheringResponse from(Gathering gathering, Long participantCurrentNumber) {
         return GatheringResponse.builder()
                 .postId(gathering.getId())
                 .gatheringName(gathering.getGatheringName())
+                .participantCurrentNumber(participantCurrentNumber)
                 .participantMaxNumber(gathering.getParticipantMaxNumber())
                 .detailAddress(gathering.getSpotName())
                 .content(gathering.getContent())

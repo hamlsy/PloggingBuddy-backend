@@ -27,21 +27,15 @@ public class MemberResponse {
     // 참여했던 모임
     private List<GatheringResponse> participatedPosts;
 
-    public static MemberResponse from(Member member, List<Gathering> pendingPosts,
-                                      List<Gathering> participatedPosts, List<Gathering> createdPosts) {
+    public static MemberResponse from(Member member, List<GatheringResponse> pendingPosts,
+                                      List<GatheringResponse> participatedPosts, List<GatheringResponse> createdPosts) {
         return MemberResponse.builder()
                 .nickname(member.getNickname())
                 .detailAddress(member.getAddress().getDetailAddress())
                 .profileImageUrl(member.getProfileImageUrl())
-                .pendingPosts(
-                        pendingPosts.stream().map(GatheringResponse::from).toList()
-                )
-                .participatedPosts(
-                        participatedPosts.stream().map(GatheringResponse::from).toList()
-                )
-                .createdPosts(
-                        createdPosts.stream().map(GatheringResponse::from).toList()
-                )
+                .pendingPosts(pendingPosts)
+                .participatedPosts(participatedPosts)
+                .createdPosts(createdPosts)
                 .build();
     }
 

@@ -5,6 +5,8 @@ import com.ploggingbuddy.domain.gathering.repository.GatheringRepository;
 import com.ploggingbuddy.global.annotation.adaptor.Adaptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -23,15 +25,15 @@ public class GatheringAdaptor {
     }
 
     public List<Gathering> queryAllByLeadUserIdOrderByDescLimit3(Long memberId) {
-        return gatheringRepository.findAllByLeadUserIdOrderByDescLimit3(memberId);
+        return gatheringRepository.findAllByLeadUserIdOrderByDescLimit(memberId, PageRequest.of(0, 3));
     }
 
     public List<Gathering> queryAllByParticipatedMemberIdOrderByDescLimit3(Long memberId) {
-        return gatheringRepository.findAllByParticipatedUserIdOrderByDescLimit3(memberId);
+        return gatheringRepository.findAllByParticipatedUserIdOrderByDescLimit(memberId, PageRequest.of(0, 3));
     }
 
     public List<Gathering> queryAllByPendingMemberIdOrderByDescLimit3(Long memberId) {
-        return gatheringRepository.findAllByPendingUserIdOrderByDescLimit3(memberId);
+        return gatheringRepository.findAllByPendingUserIdOrderByDescLimit(memberId, PageRequest.of(0, 3));
     }
 
 }
