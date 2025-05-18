@@ -1,6 +1,7 @@
 package com.ploggingbuddy.domain.gathering.repository;
 
 import com.ploggingbuddy.domain.gathering.entity.Gathering;
+import com.ploggingbuddy.domain.gathering.entity.GatheringStatus;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,4 +30,5 @@ public interface GatheringRepository extends JpaRepository<Gathering, Long> {
     @Query("SELECT g FROM Gathering g JOIN Enrollment e on g.id = e.postId WHERE e.memberId = :memberId and g.postStatus = 'GATHERING_PENDING' order by g.createdAt desc")
     List<Gathering> findAllByPendingUserIdOrderByDescLimit(@Param("memberId") Long memberId, Pageable pageable);
 
+    List<Gathering> findByGatheringEndTimeLessThanEqualAndPostStatus(LocalDateTime now, GatheringStatus postStatus);
 }
