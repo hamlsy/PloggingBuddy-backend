@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface PostImageRepository extends JpaRepository<PostImage, Long> {
 
@@ -15,4 +17,7 @@ public interface PostImageRepository extends JpaRepository<PostImage, Long> {
     @Transactional
     @Query("DELETE FROM PostImage pi WHERE pi.postId = :postId")
     void deleteByPostId(@Param("postId") Long postId);
+
+    @Query("SELECT pi FROM PostImage pi WHERE pi.postId = :postId")
+    List<PostImage> findAllByPostId(@Param("postId") Long postId);
 }
