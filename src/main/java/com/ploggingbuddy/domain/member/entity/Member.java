@@ -33,10 +33,6 @@ public class Member extends BaseTimeEntity{
 
     private String email;
 
-    @Lob
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
-
     @Embedded
     @Builder.Default
     private Address address = new Address();;
@@ -49,10 +45,6 @@ public class Member extends BaseTimeEntity{
     //business
     public void updateNickname(String nickname) {
         this.nickname = nickname;
-    }
-
-    public void updateDescription(String description) {
-        this.description = description;
     }
 
     public void updateAddress(Address address) {

@@ -2,7 +2,6 @@ package com.ploggingbuddy.usecase.member;
 
 import com.ploggingbuddy.application.member.GetMyInfoUseCase;
 import com.ploggingbuddy.application.member.UpdateMemberAddressUseCase;
-import com.ploggingbuddy.application.member.UpdateMemberDescriptionUseCase;
 import com.ploggingbuddy.application.member.UpdateMemberNicknameUseCase;
 import com.ploggingbuddy.domain.member.entity.Member;
 import com.ploggingbuddy.domain.member.repository.MemberRepository;
@@ -25,9 +24,6 @@ public class MemberUseCaseTest {
 
     @Autowired
     private UpdateMemberNicknameUseCase updateMemberNicknameUseCase;
-
-    @Autowired
-    private UpdateMemberDescriptionUseCase updateMemberDescriptionUseCase;
 
     @Autowired
     private UpdateMemberAddressUseCase updateMemberAddressUseCase;
@@ -53,7 +49,6 @@ public class MemberUseCaseTest {
         return Member.builder()
                 .username("testUser")
                 .nickname("testNickname")
-                .description("testDescription")
                 .address(address)
                 .email("testEmail")
                 .profileImageUrl("testProfileImageUrl")

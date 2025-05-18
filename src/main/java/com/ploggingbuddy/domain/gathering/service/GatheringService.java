@@ -18,8 +18,8 @@ public class GatheringService {
     private final GatheringValidator gatheringValidator;
 
     // 신규 생성
-    public void save(Gathering gathering) {
-        gatheringRepository.save(gathering);
+    public Gathering save(Gathering gathering) {
+        return gatheringRepository.save(gathering);
     }
 
     //삭제 처리

@@ -8,4 +8,8 @@ import java.util.List;
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
 
     List<Enrollment> findAllByPostId(Long postId);
+
+    Long countByPostId(Long postId);
+
+    boolean existsByPostIdAndMemberId(Long postId, Long userId);
 }

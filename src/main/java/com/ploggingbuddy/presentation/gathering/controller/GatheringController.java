@@ -12,10 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/gathering")
@@ -47,7 +44,7 @@ public class GatheringController {
     }
 
     @PostMapping("/update")
-    @Operation(summary = "모집 게시글 인원 수정", description = "본인이 작성한 게시글의 모집 인원을 수정하는 api입니다.")
+    @Operation(summary = "모집 게시글 인원수, 이미지 수정", description = "본인이 작성한 게시글의 모집 인원과 이미지를 수정하는 api입니다.")
     public ResponseEntity<Void> updateGatheringAmount(
             @CurrentMember Member member,
             @RequestBody UpdateGatheringAmountDto requestBody
