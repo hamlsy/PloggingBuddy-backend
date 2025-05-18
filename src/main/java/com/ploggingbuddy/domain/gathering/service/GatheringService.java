@@ -22,6 +22,11 @@ public class GatheringService {
         return gatheringRepository.save(gathering);
     }
 
+    public Gathering getGatheringData(Long postId){
+        gatheringValidator.validateGatheringPostIdExist(postId);
+        return gatheringRepository.findById(postId).get();
+    }
+
     // 게시글 상태 수정
     // 유저에 의해 조기 마감시 GatheringStatus 값을 null로 전달
     public void updatePostStatus(Long postId, GatheringStatus postStatus, Long requestUserId, Long enrolledCount) {

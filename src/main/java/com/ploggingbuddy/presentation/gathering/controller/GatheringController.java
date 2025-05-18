@@ -2,10 +2,8 @@ package com.ploggingbuddy.presentation.gathering.controller;
 
 import com.ploggingbuddy.application.gathering.*;
 import com.ploggingbuddy.domain.member.entity.Member;
-import com.ploggingbuddy.presentation.gathering.dto.request.PostGatheringPostDto;
-import com.ploggingbuddy.presentation.gathering.dto.request.UpdateGatheringAmountDto;
-import com.ploggingbuddy.presentation.gathering.dto.request.UpdatePendingPostStatusDto;
-import com.ploggingbuddy.presentation.gathering.dto.request.UpdatePostStatusAsDeletedDto;
+import com.ploggingbuddy.presentation.gathering.dto.request.*;
+import com.ploggingbuddy.presentation.gathering.dto.response.GetGatheringDetailResponse;
 import com.ploggingbuddy.security.aop.CurrentMember;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,6 +21,7 @@ public class GatheringController {
     private final UpdateGatheringAmountUseCase updateGatheringAmountUseCase;
     private final FinishGatheringUseCase finishGatheringUseCase;
     private final DecidePendingPostStatusUseCase decidePendingPostStatusUseCase;
+    private final GetGatheringDataUseCase getGatheringDataUseCase;
 
     @PostMapping("/new")
     @Operation(summary = "모집 게시글 작성", description = "새 모집 게시글을 작성하는 api입니다.")
@@ -32,6 +31,14 @@ public class GatheringController {
     ) {
         createGatheringUseCase.execute(requestBody, member.getId());
         return ResponseEntity.ok().build();
+    }
+
+    //1개 조회
+    @GetMapping("/{postId}")
+    public ResponseEntity<GetGatheringDetailResponse> getGatheringData(
+            @PathVariable Long postId
+    ){
+        return ResponseEntity.ok(getGatheringDataUseCase.execute(postId));
     }
 
     @PostMapping("/delete")
