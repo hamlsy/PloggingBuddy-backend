@@ -9,6 +9,8 @@ import com.ploggingbuddy.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 @RequiredArgsConstructor
 public class GatheringValidator {
@@ -37,6 +39,12 @@ public class GatheringValidator {
         if (!gatheringRepository.findById(gatheringPostId)
                 .get().getPostStatus().equals(GatheringStatus.GATHERING)) {
             throw new BadRequestException(ErrorCode.POST_NOT_GATHERING_NOW);
+        }
+    }
+
+    public void validateGatheringEndTime(LocalDateTime endTime) {
+        if(LocalDateTime.now().isAfter(endTime)) {
+            throw new BadRequestException(ErrorCode.INVALID_GATHERING_END_TIME);
         }
     }
 }

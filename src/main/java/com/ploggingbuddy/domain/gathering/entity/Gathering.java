@@ -35,6 +35,8 @@ public class Gathering {
     @Lob
     private String content;
 
+    private LocalDateTime gatheringEndTime;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -49,7 +51,7 @@ public class Gathering {
         this.participantMaxNumber = participantNumberMax;
     }
 
-    public Gathering(Long leadUserId, String gatheringName, String content, Long participantMaxNumber, String spotName, Double spotLatitude, Double spotLongitude) {
+    public Gathering(Long leadUserId, String gatheringName, String content, Long participantMaxNumber, String spotName, Double spotLatitude, Double spotLongitude, LocalDateTime gatheringEndTime) {
         this.leadUserId = leadUserId;
         this.gatheringName = gatheringName;
         this.content = content;
@@ -58,6 +60,7 @@ public class Gathering {
         this.createdAt = LocalDateTime.now();
         this.spotLatitude = spotLatitude;
         this.spotLongitude = spotLongitude;
+        this.gatheringEndTime = gatheringEndTime;
     }
 
 }
