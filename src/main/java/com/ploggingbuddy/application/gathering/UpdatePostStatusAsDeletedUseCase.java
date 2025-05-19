@@ -14,6 +14,6 @@ public class UpdatePostStatusAsDeletedUseCase {
     private final GatheringService gatheringService;
 
     public void execute(UpdatePostStatusAsDeletedDto postGatheringPostDto, Long userId) {
-        gatheringService.updatePostStatus(postGatheringPostDto.postId(), GatheringStatus.DELETED, userId);
+        gatheringService.updatePostStatus(postGatheringPostDto.postId(), GatheringStatus.DELETED, userId, null);
     }
 }

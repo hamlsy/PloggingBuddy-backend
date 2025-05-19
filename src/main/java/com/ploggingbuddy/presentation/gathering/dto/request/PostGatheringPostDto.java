@@ -1,5 +1,6 @@
 package com.ploggingbuddy.presentation.gathering.dto.request;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record PostGatheringPostDto(
@@ -9,6 +10,7 @@ public record PostGatheringPostDto(
         String spotName,
         Double spotLongitude,
         Double spotLatitude,
+        LocalDateTime gatheringEndTime,
         List<String> imageList
 ) {
 }

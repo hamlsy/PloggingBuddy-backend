@@ -16,6 +16,7 @@ public enum ErrorCode implements PloggingBuddyErrorCode{
     POST_NOT_GATHERING_NOW(HttpStatus.BAD_REQUEST, 400, "현재 해당 모임 글이 모집하고 있지 않습니다."),
     EXCEED_PARTICIPANT_LIMIT(HttpStatus.BAD_REQUEST, 400, "신청가능한 인원이 초과하였습니다."),
     DUPLICATED_ENROLLMENT(HttpStatus.BAD_REQUEST, 400, "이미 신청한 모임 글 입니다."),
+    INVALID_GATHERING_END_TIME(HttpStatus.BAD_REQUEST, 400, "현시간보다 모집 마감시간이 이를 수 없습니다."),
 
     // 403 forbidden
     FORBIDDEN_EDIT_POST(HttpStatus.FORBIDDEN, 403, "모임 글 수정 권한이 없는 유저입니다."),

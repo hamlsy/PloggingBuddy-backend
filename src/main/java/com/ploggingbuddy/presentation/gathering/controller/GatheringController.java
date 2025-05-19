@@ -1,11 +1,10 @@
 package com.ploggingbuddy.presentation.gathering.controller;
 
-import com.ploggingbuddy.application.gathering.CreateGatheringUseCase;
-import com.ploggingbuddy.application.gathering.UpdateGatheringAmountUseCase;
-import com.ploggingbuddy.application.gathering.UpdatePostStatusAsDeletedUseCase;
+import com.ploggingbuddy.application.gathering.*;
 import com.ploggingbuddy.domain.member.entity.Member;
 import com.ploggingbuddy.presentation.gathering.dto.request.PostGatheringPostDto;
 import com.ploggingbuddy.presentation.gathering.dto.request.UpdateGatheringAmountDto;
+import com.ploggingbuddy.presentation.gathering.dto.request.UpdatePendingPostStatusDto;
 import com.ploggingbuddy.presentation.gathering.dto.request.UpdatePostStatusAsDeletedDto;
 import com.ploggingbuddy.security.aop.CurrentMember;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,6 +21,8 @@ public class GatheringController {
     private final CreateGatheringUseCase createGatheringUseCase;
     private final UpdatePostStatusAsDeletedUseCase updatePostStatusAsDeletedUseCase;
     private final UpdateGatheringAmountUseCase updateGatheringAmountUseCase;
+    private final FinishGatheringUseCase finishGatheringUseCase;
+    private final DecidePendingPostStatusUseCase decidePendingPostStatusUseCase;
 
     @PostMapping("/new")
     @Operation(summary = "모집 게시글 작성", description = "새 모집 게시글을 작성하는 api입니다.")
@@ -53,4 +54,24 @@ public class GatheringController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/gathering-finish/{postId}")
+    @Operation(summary = "모집 조기 마감", description = "모집 중인 게시글을 조기 마감하는 api입니다.")
+    public ResponseEntity<Void> finishGathering(
+            @CurrentMember Member member,
+            @PathVariable Long postId
+    ) {
+        finishGatheringUseCase.execute(postId, member.getId());
+        return ResponseEntity.ok().build();
+    }
+
+    //모임 강행할지 결정 api
+    @PutMapping("/status-decision")
+    @Operation(summary = "모임 강행 여부 선택", description = "조기마감시킨 모임을 강행할지 결정하는 api입니다.")
+    public ResponseEntity<Void> decideProceedOrNot(
+            @CurrentMember Member member,
+            @RequestBody UpdatePendingPostStatusDto requestBody
+    ) {
+        decidePendingPostStatusUseCase.execute(member.getId(), requestBody);
+        return ResponseEntity.ok().build();
+    }
 }

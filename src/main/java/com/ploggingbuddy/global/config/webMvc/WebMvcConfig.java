@@ -2,6 +2,7 @@ package com.ploggingbuddy.global.config.webMvc;
 
 import com.ploggingbuddy.security.resolver.CustomAuthenticationPrincipalArgumentResolver;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -10,11 +11,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
 
 @Configuration
-@RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
-    //todo 환경변수 파일로
-    private static final String CORS_FRONT_PATH = "http://localhost:3000";
+
+    private final String CORS_FRONT_PATH;
     private final CustomAuthenticationPrincipalArgumentResolver customAuthenticationPrincipalArgumentResolver;
+
+    public WebMvcConfig(@Value("${app.cors.front-path}") String CORS_FRONT_PATH, CustomAuthenticationPrincipalArgumentResolver customAuthenticationPrincipalArgumentResolver) {
+        this.CORS_FRONT_PATH = CORS_FRONT_PATH;
+        this.customAuthenticationPrincipalArgumentResolver = customAuthenticationPrincipalArgumentResolver;
+    }
 
     //resolver
     @Override
