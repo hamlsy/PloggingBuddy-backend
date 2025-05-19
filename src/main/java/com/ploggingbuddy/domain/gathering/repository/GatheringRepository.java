@@ -27,7 +27,9 @@ public interface GatheringRepository extends JpaRepository<Gathering, Long> {
     @Query("SELECT g FROM Gathering g JOIN Enrollment e on g.id = e.postId WHERE e.memberId = :memberId and g.postStatus = 'FINISHED' order by g.createdAt desc")
     List<Gathering> findAllByParticipatedUserIdOrderByDescLimit(@Param("memberId") Long memberId, Pageable pageable);
 
-    @Query("SELECT g FROM Gathering g JOIN Enrollment e on g.id = e.postId WHERE e.memberId = :memberId and g.postStatus = 'GATHERING_PENDING' order by g.createdAt desc")
+    @Query("SELECT g FROM Gathering g JOIN Enrollment e on g.id = e.postId WHERE e.memberId = :memberId and " +
+            "g.postStatus = 'GATHERING' or g.postStatus = 'GATHERING_PENDING' " +
+            "or g.postStatus = 'GATHERING_CONFIRMED' order by g.createdAt desc")
     List<Gathering> findAllByPendingUserIdOrderByDescLimit(@Param("memberId") Long memberId, Pageable pageable);
 
     List<Gathering> findByGatheringEndTimeLessThanEqualAndPostStatus(LocalDateTime now, GatheringStatus postStatus);
