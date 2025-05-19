@@ -4,6 +4,7 @@ import com.ploggingbuddy.application.gathering.*;
 import com.ploggingbuddy.domain.member.entity.Member;
 import com.ploggingbuddy.presentation.gathering.dto.request.*;
 import com.ploggingbuddy.presentation.gathering.dto.response.GetGatheringDetailResponse;
+import com.ploggingbuddy.presentation.gathering.dto.response.GetGatheringsNearSpotResponse;
 import com.ploggingbuddy.security.aop.CurrentMember;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,6 +23,7 @@ public class GatheringController {
     private final FinishGatheringUseCase finishGatheringUseCase;
     private final DecidePendingPostStatusUseCase decidePendingPostStatusUseCase;
     private final GetGatheringDataUseCase getGatheringDataUseCase;
+    private final GetGatheringsNearSpotUseCase getGatheringsNearSpotUseCase;
 
     @PostMapping("/new")
     @Operation(summary = "모집 게시글 작성", description = "새 모집 게시글을 작성하는 api입니다.")
@@ -39,6 +41,14 @@ public class GatheringController {
             @PathVariable Long postId
     ){
         return ResponseEntity.ok(getGatheringDataUseCase.execute(postId));
+    }
+
+    //인근 5km 이내 모임글 리스트 조회
+    @GetMapping("/spot/{latitude}/{longitude}")
+    public ResponseEntity<GetGatheringsNearSpotResponse> getGatheringsNearSpot(
+            @PathVariable Double latitude,
+            @PathVariable Double longitude){
+        return ResponseEntity.ok(getGatheringsNearSpotUseCase.execute(latitude, longitude));
     }
 
     @PostMapping("/delete")
