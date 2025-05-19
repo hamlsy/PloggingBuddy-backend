@@ -26,7 +26,8 @@ public class CreateGatheringUseCase {
                 postGatheringPostDto.spotName(),
                 postGatheringPostDto.spotLatitude(),
                 postGatheringPostDto.spotLongitude(),
-                postGatheringPostDto.gatheringEndTime());
+                postGatheringPostDto.gatheringEndTime(),
+                postGatheringPostDto.gatheringTime());
         Long postId = gatheringService.save(gathering).getId();
 
         if (postGatheringPostDto.imageList() != null && !postGatheringPostDto.imageList().isEmpty()) {
