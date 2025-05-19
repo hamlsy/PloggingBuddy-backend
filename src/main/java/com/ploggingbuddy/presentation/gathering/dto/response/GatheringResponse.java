@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -21,6 +22,7 @@ public class GatheringResponse {
     private String content;
     private String postStatus;
     private String detailAddress;
+    private LocalDateTime gatheringEndTime;
     private List<String> imageUrlList;
 
     public static GatheringResponse from(Gathering gathering, Long participantCurrentNumber, List<String> imageUrlList) {
@@ -33,6 +35,7 @@ public class GatheringResponse {
                 .content(gathering.getContent())
                 .imageUrlList(imageUrlList)
                 .postStatus(gathering.getPostStatus().name())
+                .gatheringEndTime(gathering.getGatheringEndTime())
                 .build();
     }
 }
