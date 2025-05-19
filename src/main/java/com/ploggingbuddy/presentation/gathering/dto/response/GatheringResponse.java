@@ -31,7 +31,7 @@ public class GatheringResponse {
                 .gatheringName(gathering.getGatheringName())
                 .participantCurrentNumber(participantCurrentNumber)
                 .participantMaxNumber(gathering.getParticipantMaxNumber())
-                .detailAddress(gathering.getSpotName())
+                .detailAddress(gathering.getSpotStringAddress())
                 .content(gathering.getContent())
                 .imageUrlList(imageUrlList)
                 .postStatus(gathering.getPostStatus().name())

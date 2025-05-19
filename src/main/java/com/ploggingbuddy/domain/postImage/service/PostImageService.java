@@ -27,4 +27,7 @@ public class PostImageService {
         postImageRepository.deleteByPostId(postId);
     }
 
+    public List<String> getPostImageList(Long postId) {
+        return postImageRepository.findAllByPostId(postId).stream().map(PostImage::getUrl).collect(Collectors.toList());
+    }
 }

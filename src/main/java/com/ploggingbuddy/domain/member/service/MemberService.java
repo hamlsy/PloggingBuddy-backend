@@ -24,4 +24,8 @@ public class MemberService {
         member.updateAddress(address);
     }
 
+    public String getNicknameById(Long userId) {
+       return memberRepository.findById(userId).get().getNickname();
+    }
+
 }
