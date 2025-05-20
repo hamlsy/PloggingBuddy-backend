@@ -17,6 +17,7 @@ import java.util.List;
 public class MemberResponse {
 
     private String nickname;
+    private String email;
     private String detailAddress;
     private String profileImageUrl;
 
@@ -36,6 +37,7 @@ public class MemberResponse {
                 .pendingPosts(pendingPosts)
                 .participatedPosts(participatedPosts)
                 .createdPosts(createdPosts)
+                .email(member.getEmail())
                 .build();
     }
 

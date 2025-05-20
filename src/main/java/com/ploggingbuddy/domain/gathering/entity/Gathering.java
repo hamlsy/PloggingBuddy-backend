@@ -26,7 +26,7 @@ public class Gathering {
 
     private Long participantMaxNumber;
 
-    private String spotName;
+    private String spotStringAddress;
 
     private Double spotLatitude;
 
@@ -51,12 +51,12 @@ public class Gathering {
         this.participantMaxNumber = participantNumberMax;
     }
 
-    public Gathering(Long leadUserId, String gatheringName, String content, Long participantMaxNumber, String spotName, Double spotLatitude, Double spotLongitude, LocalDateTime gatheringEndTime) {
+    public Gathering(Long leadUserId, String gatheringName, String content, Long participantMaxNumber, String spotStringAddress, Double spotLatitude, Double spotLongitude, LocalDateTime gatheringEndTime) {
         this.leadUserId = leadUserId;
         this.gatheringName = gatheringName;
         this.content = content;
         this.participantMaxNumber = participantMaxNumber;
-        this.spotName = spotName;
+        this.spotStringAddress = spotStringAddress;
         this.createdAt = LocalDateTime.now();
         this.spotLatitude = spotLatitude;
         this.spotLongitude = spotLongitude;
