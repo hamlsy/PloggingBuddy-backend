@@ -39,7 +39,7 @@ public class MemberController {
         return ResponseEntity.ok(getMyInfoUseCase.execute(member));
     }
 
-    @Operation(summary = "회원 주소 검증", description = "회원 주소를 검증합니다.")
+    @Operation(summary = "회원 주소 검증 및 내 정보 조회", description = "메인페이지에서 회원 주소를 검증하고, 내 정보를 가져옵니다.")
     @GetMapping("/address/validate")
     public ResponseEntity<MemberAddressValidateResponse> validateAddress(@CurrentMember Member member) {
         return ResponseEntity.ok(MemberAddressValidateResponse.from(member));
