@@ -33,7 +33,7 @@ spring:
             client-name: Kakao
             authorization-grant-type: authorization_code
             #redirect-uri: "https://plogging-buddy.vercel.app/oauth/callback/kakao"
-            redirect-uri: "http://localhost:8080"
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             client-authentication-method: client_secret_post
 
 
