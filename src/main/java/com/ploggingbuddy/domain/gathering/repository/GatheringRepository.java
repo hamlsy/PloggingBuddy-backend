@@ -34,6 +34,12 @@ public interface GatheringRepository extends JpaRepository<Gathering, Long> {
 
     List<Gathering> findByGatheringEndTimeLessThanEqualAndPostStatus(LocalDateTime now, GatheringStatus postStatus);
 
+    List<Gathering> findByGatheringTimeLessThanAndPostStatusNotIn(
+            LocalDateTime now,
+            List<GatheringStatus> excludedStatuses
+    );
+
+
     @Query("SELECT g FROM Gathering g WHERE g.spotLatitude BETWEEN :minLat AND :maxLat AND g.spotLongitude BETWEEN :minLon AND :maxLon")
     List<Gathering> findByLatitudeLongitudeInRange(
             @Param("minLat") Double minLat,
