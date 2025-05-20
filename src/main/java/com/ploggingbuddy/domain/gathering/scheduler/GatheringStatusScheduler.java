@@ -4,6 +4,8 @@ import com.ploggingbuddy.domain.enrollment.service.EnrollmentService;
 import com.ploggingbuddy.domain.gathering.entity.Gathering;
 import com.ploggingbuddy.domain.gathering.entity.GatheringStatus;
 import com.ploggingbuddy.domain.gathering.repository.GatheringRepository;
+import com.ploggingbuddy.global.exception.base.InternalServerErrorException;
+import com.ploggingbuddy.global.exception.code.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -32,14 +34,14 @@ public class GatheringStatusScheduler {
         List<Gathering> gatheringPostsToClose = gatheringRepository.findByGatheringEndTimeLessThanEqualAndPostStatus(LocalDateTime.now(), GatheringStatus.GATHERING);
         for (Gathering gathering : gatheringPostsToClose) {
             gatheredCnt = enrollmentService.getEnrolledCount(gathering.getId());
-            if(gatheredCnt == 0){
+            if (gatheredCnt == 0) {
                 gathering.updatePostStatus(GatheringStatus.GATHERING_FAILED);
-            }else if(gatheredCnt>0){
+            } else if (gatheredCnt > 0) {
                 gathering.updatePostStatus(GatheringStatus.GATHERING_PENDING);
             }
         }
 
-        // 모임시각이 지난 gathering 게시글 상태 자동 변동 스케줄러
+/*        // 모임시각이 지난 gathering 게시글 상태 자동 변동 스케줄러
         // 성사되지 않은 모임(모집인원 0명(이 경우 자동스케줄러에서 진행됨)/ N명 신청했으나 모임개설유저가 모임 미진행 선택시/ 모임 개최 여부 대기 중 모임시각이 지날시), GATHERING_FAILED 값
         // 성공적으로 성사된 모임(GATHERING_CONFIRMED)일때, FINISHED 값
         List<GatheringStatus> excludeStatus = List.of(GatheringStatus.FINISHED, GatheringStatus.GATHERING_FAILED);
@@ -50,6 +52,19 @@ public class GatheringStatusScheduler {
             }else if(gathering.getPostStatus().equals(GatheringStatus.GATHERING_CONFIRMED)){
                 gathering.updatePostStatus(GatheringStatus.FINISHED);
             }
+        }*/
+    }
+
+    // 개별 모임시간 이후 모임 종료 상태로 도입
+    @Transactional
+    public void updateGatheringStatusDone(Long gatheringId) {
+        Gathering gathering = gatheringRepository.findById(gatheringId)
+                .orElseThrow(() -> new InternalServerErrorException(ErrorCode.INTERNAL_SERVER_ERROR));
+        if (gathering.getPostStatus().equals(GatheringStatus.GATHERING_PENDING)
+                || gathering.getPostStatus().equals(GatheringStatus.GATHERING)) {
+            gathering.updatePostStatus(GatheringStatus.GATHERING_FAILED);
+        } else if (gathering.getPostStatus().equals(GatheringStatus.GATHERING_CONFIRMED)) {
+            gathering.updatePostStatus(GatheringStatus.FINISHED);
         }
     }
 }
