@@ -52,7 +52,7 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
                 .queryParam("provider", provider)
                 .build()
                 .toUriString();
-        log.info("code = " + jwtToken.getAccessToken());
+        log.info("code = {}", jwtToken.getAccessToken());
         response.addHeader("Authorization",
                 jwtToken.getGrantType() + " " + jwtToken.getAccessToken());
 
