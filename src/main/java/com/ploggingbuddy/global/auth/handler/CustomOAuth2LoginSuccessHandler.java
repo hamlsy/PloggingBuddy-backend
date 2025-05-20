@@ -20,15 +20,16 @@ import java.util.Collection;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final String REDIRECT_URI;
+    private final String REDIRECT_URI = "https://plogging-buddy.vercel.app/oauth/callback/kakao";
     private final TokenService tokenService;
 
-    public CustomOAuth2LoginSuccessHandler(@Value("security.oauth2.client.registration.redirect-uri") String REDIRECT_URI, TokenService tokenService) {
-        this.REDIRECT_URI = REDIRECT_URI;
-        this.tokenService = tokenService;
-    }
+    // public CustomOAuth2LoginSuccessHandler(@Value("security.oauth2.client.registration.redirect-uri") String REDIRECT_URI, TokenService tokenService) {
+    //     this.REDIRECT_URI = REDIRECT_URI;
+    //     this.tokenService = tokenService;
+    // }
 
 
     @Override
