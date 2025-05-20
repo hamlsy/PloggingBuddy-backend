@@ -1,7 +1,6 @@
 package com.ploggingbuddy.domain.scheduler.service;
 
 import com.ploggingbuddy.domain.gathering.scheduler.GatheringStatusScheduler;
-import com.ploggingbuddy.domain.gathering.service.GatheringService;
 import com.ploggingbuddy.domain.scheduler.entity.ScheduledStatus;
 import com.ploggingbuddy.domain.scheduler.entity.ScheduledTask;
 import com.ploggingbuddy.domain.scheduler.repository.ScheduledTaskRepository;
@@ -27,6 +26,8 @@ public class ScheduledTaskService {
     private final ScheduledTaskRepository scheduledTaskRepository;
     private final GatheringStatusScheduler gatheringStatusScheduler;
 
+    private final ScheduledTaskProcessor scheduledTaskProcessor;
+
     @Transactional
     @EventListener(ApplicationReadyEvent.class)
     public void initScheduledTask() {
@@ -34,13 +35,11 @@ public class ScheduledTaskService {
                 scheduledTaskRepository.findByStatus(ScheduledStatus.PENDING);
 
         scheduledTaskList.forEach(task -> {
-            Long delaySeconds = calculateDelaySeconds(LocalDateTime.now(), task.getExecuteTime());
+            long delaySeconds = calculateDelaySeconds(LocalDateTime.now(), task.getExecuteTime());
 
-            if (delaySeconds <= 0) {
-                gatheringStatusScheduler.updateGatheringStatusDone(task.getGatheringId());
-                task.scheduledMessageStatusUpdate();
-                scheduledTaskRepository.delete(task);
-            } else {
+            scheduledTaskProcessor.processInitScheduling(task, delaySeconds);
+
+            if (delaySeconds > 0) {
                 Runnable updateStatus = updateStatusAsDone(task.getGatheringId());
 
                 ZoneId zone = ZoneId.systemDefault();
