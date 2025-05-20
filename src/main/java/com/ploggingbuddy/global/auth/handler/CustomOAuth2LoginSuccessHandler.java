@@ -28,7 +28,6 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
     private final String REDIRECT_URI = "https://plogging-buddy.vercel.app/oauth/callback/kakao";
     private final TokenService tokenService;
 
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         if (response.isCommitted()) {
@@ -50,7 +49,6 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
                 .queryParam("provider", provider)
                 .build()
                 .toUriString();
-       log.info("code {}", jwtToken.getAccessToken());
         response.addHeader("Authorization",
                 jwtToken.getGrantType() + " " + jwtToken.getAccessToken());
 
