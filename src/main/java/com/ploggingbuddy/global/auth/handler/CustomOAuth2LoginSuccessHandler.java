@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,15 +22,11 @@ import java.util.Collection;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final String REDIRECT_URI;
+    private final String REDIRECT_URI = "https://plogging-buddy.vercel.app/oauth/callback/kakao";
     private final TokenService tokenService;
-
-    public CustomOAuth2LoginSuccessHandler(@Value("security.oauth2.client.registration.redirect-uri") String REDIRECT_URI, TokenService tokenService) {
-        this.REDIRECT_URI = REDIRECT_URI;
-        this.tokenService = tokenService;
-    }
 
 
     @Override
@@ -52,7 +50,7 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
                 .queryParam("provider", provider)
                 .build()
                 .toUriString();
-
+       log.info("code {}", jwtToken.getAccessToken());
         response.addHeader("Authorization",
                 jwtToken.getGrantType() + " " + jwtToken.getAccessToken());
 
