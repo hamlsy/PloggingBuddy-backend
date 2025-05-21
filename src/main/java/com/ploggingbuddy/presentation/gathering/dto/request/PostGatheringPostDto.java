@@ -11,6 +11,7 @@ public record PostGatheringPostDto(
         Double spotLongitude,
         Double spotLatitude,
         LocalDateTime gatheringEndTime,
+        LocalDateTime gatheringTime,
         List<String> imageList
 ) {
 }

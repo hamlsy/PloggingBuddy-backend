@@ -16,16 +16,18 @@ import java.util.List;
 public class GatheringResponse {
 
     private Long postId;
+    private String nickname;
     private String gatheringName;
     private Long participantCurrentNumber;
     private Long participantMaxNumber;
     private String content;
     private String postStatus;
     private String detailAddress;
+    private LocalDateTime gatheringTime;
     private LocalDateTime gatheringEndTime;
     private List<String> imageUrlList;
 
-    public static GatheringResponse from(Gathering gathering, Long participantCurrentNumber, List<String> imageUrlList) {
+    public static GatheringResponse from(Gathering gathering, Long participantCurrentNumber, List<String> imageUrlList, String nickname) {
         return GatheringResponse.builder()
                 .postId(gathering.getId())
                 .gatheringName(gathering.getGatheringName())
@@ -36,6 +38,8 @@ public class GatheringResponse {
                 .imageUrlList(imageUrlList)
                 .postStatus(gathering.getPostStatus().name())
                 .gatheringEndTime(gathering.getGatheringEndTime())
+                .gatheringTime(gathering.getGatheringTime())
+                .nickname(nickname)
                 .build();
     }
 }

@@ -3,6 +3,7 @@ package com.ploggingbuddy.presentation.gathering.dto.response;
 import com.ploggingbuddy.domain.gathering.entity.Gathering;
 import com.ploggingbuddy.domain.gathering.entity.GatheringStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record GetGatheringDetailResponse(
@@ -16,6 +17,8 @@ public record GetGatheringDetailResponse(
         String address,
         Double longitude,
         Double latitude,
+        LocalDateTime gatheringEndTime,
+        LocalDateTime gatheringTime,
         String content,
         List<String> imageList
 ) {
@@ -30,6 +33,8 @@ public record GetGatheringDetailResponse(
                 gathering.getSpotStringAddress(),
                 gathering.getSpotLongitude(),
                 gathering.getSpotLatitude(),
+                gathering.getGatheringEndTime(),
+                gathering.getGatheringTime(),
                 gathering.getContent(),
                 imageList
         );
