@@ -19,14 +19,24 @@ import java.time.ZoneId;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class ScheduledTaskService {
-    @Qualifier("taskScheduler")
     private final TaskScheduler taskScheduler;
     private final ScheduledTaskRepository scheduledTaskRepository;
     private final GatheringStatusScheduler gatheringStatusScheduler;
 
     private final ScheduledTaskProcessor scheduledTaskProcessor;
+
+    public ScheduledTaskService(
+            @Qualifier("taskScheduler") TaskScheduler taskScheduler,
+            ScheduledTaskRepository scheduledTaskRepository,
+            GatheringStatusScheduler gatheringStatusScheduler,
+            ScheduledTaskProcessor scheduledTaskProcessor
+    ) {
+        this.taskScheduler = taskScheduler;
+        this.scheduledTaskRepository = scheduledTaskRepository;
+        this.gatheringStatusScheduler = gatheringStatusScheduler;
+        this.scheduledTaskProcessor = scheduledTaskProcessor;
+    }
 
     @Transactional
     @EventListener(ApplicationReadyEvent.class)
