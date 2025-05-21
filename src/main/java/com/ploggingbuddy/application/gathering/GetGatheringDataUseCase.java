@@ -2,6 +2,7 @@ package com.ploggingbuddy.application.gathering;
 
 import com.ploggingbuddy.domain.gathering.entity.Gathering;
 import com.ploggingbuddy.domain.gathering.service.GatheringService;
+import com.ploggingbuddy.domain.member.entity.Member;
 import com.ploggingbuddy.domain.member.service.MemberService;
 import com.ploggingbuddy.domain.postImage.service.PostImageService;
 import com.ploggingbuddy.global.annotation.usecase.UseCase;
@@ -19,12 +20,12 @@ public class GetGatheringDataUseCase {
     private final MemberService memberService;
     private final PostImageService postImageService;
 
-    public GetGatheringDetailResponse execute(Long postId) {
+    public GetGatheringDetailResponse execute(Member member, Long postId) {
 
         Gathering gathering = gatheringService.getGatheringData(postId);
         String leadUserNickname = memberService.getNicknameById(gathering.getLeadUserId());
         List<String> imageList = postImageService.getPostImageList(postId);
-
-        return GetGatheringDetailResponse.of(gathering, leadUserNickname, imageList);
+        boolean isAuthor = member.getId().equals(gathering.getLeadUserId());
+        return GetGatheringDetailResponse.of(gathering, leadUserNickname, imageList, isAuthor);
     }
 }
