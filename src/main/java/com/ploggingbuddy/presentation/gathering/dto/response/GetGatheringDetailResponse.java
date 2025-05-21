@@ -11,6 +11,7 @@ public record GetGatheringDetailResponse(
         Long leadUserId,
         String leadUserNickname,
         GatheringStatus gatheringStatus,
+        Long enrolledCount,
         Long participantMaxNumber,
         String title,
         String address,
@@ -19,13 +20,15 @@ public record GetGatheringDetailResponse(
         LocalDateTime gatheringEndTime,
         LocalDateTime gatheringTime,
         String content,
-        List<String> imageList
+        List<String> imageList,
+        boolean isAuthor
 ) {
-    public static GetGatheringDetailResponse of(Gathering gathering, String leadUserNickname, List<String> imageList) {
+    public static GetGatheringDetailResponse of(Gathering gathering, Long enrolledCount, String leadUserNickname, List<String> imageList, boolean isAuthor) {
         return new GetGatheringDetailResponse(gathering.getId(),
                 gathering.getLeadUserId(),
                 leadUserNickname,
                 gathering.getPostStatus(),
+                enrolledCount,
                 gathering.getParticipantMaxNumber(),
                 gathering.getGatheringName(),
                 gathering.getSpotStringAddress(),
@@ -34,7 +37,8 @@ public record GetGatheringDetailResponse(
                 gathering.getGatheringEndTime(),
                 gathering.getGatheringTime(),
                 gathering.getContent(),
-                imageList
+                imageList,
+                isAuthor
         );
     }
 }

@@ -38,10 +38,10 @@ public class GatheringController {
     //1개 조회
     @GetMapping("/{postId}")
     @Operation(summary = "모집게시글 조회", description = "모임글 데이터를 조회하는 api입니다.")
-    public ResponseEntity<GetGatheringDetailResponse> getGatheringData(
+    public ResponseEntity<GetGatheringDetailResponse> getGatheringData(@CurrentMember Member member,
             @PathVariable Long postId
     ){
-        return ResponseEntity.ok(getGatheringDataUseCase.execute(postId));
+        return ResponseEntity.ok(getGatheringDataUseCase.execute(member, postId));
     }
 
     //인근 5km 이내 모임글 리스트 조회

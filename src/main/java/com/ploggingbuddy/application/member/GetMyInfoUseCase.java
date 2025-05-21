@@ -4,6 +4,7 @@ import com.ploggingbuddy.domain.enrollment.adaptor.EnrollmentAdaptor;
 import com.ploggingbuddy.domain.enrollment.repository.EnrollmentRepository;
 import com.ploggingbuddy.domain.gathering.adaptor.GatheringAdaptor;
 import com.ploggingbuddy.domain.gathering.entity.Gathering;
+import com.ploggingbuddy.domain.member.adaptor.MemberAdaptor;
 import com.ploggingbuddy.domain.member.entity.Member;
 import com.ploggingbuddy.domain.postImage.entity.PostImage;
 import com.ploggingbuddy.domain.postImage.repository.PostImageRepository;
@@ -25,6 +26,7 @@ public class GetMyInfoUseCase {
     private final GatheringAdaptor gatheringAdaptor;
     private final EnrollmentRepository enrollmentRepository;
     private final PostImageRepository postImageRepository;
+    private final MemberAdaptor memberAdaptor;
 
     public MemberResponse execute(Member member) {
         List<Gathering> pendingPosts = gatheringAdaptor.queryAllByPendingMemberIdOrderByDescLimit3(member.getId());
@@ -32,7 +34,7 @@ public class GetMyInfoUseCase {
                 .map(p -> GatheringResponse.from(p, enrollmentRepository.countByPostId(p.getId()),
                         postImageRepository.findAllByPostId(p.getId()).stream()
                                 .map(PostImage::getUrl)
-                                .toList()
+                                .toList(), getNicknameByLeadUserId(p.getLeadUserId())
                 )).toList();
 
         List<Gathering> participatedPosts = gatheringAdaptor.queryAllByParticipatedMemberIdOrderByDescLimit3(member.getId());
@@ -40,7 +42,7 @@ public class GetMyInfoUseCase {
                 .map(p -> GatheringResponse.from(p, enrollmentRepository.countByPostId(p.getId()),
                         postImageRepository.findAllByPostId(p.getId()).stream()
                         .map(PostImage::getUrl)
-                        .toList())
+                        .toList(),getNicknameByLeadUserId(p.getLeadUserId()))
                 ).toList();
 
         List<Gathering> createdPosts = gatheringAdaptor.queryAllByLeadUserIdOrderByDescLimit3(member.getId());
@@ -48,10 +50,14 @@ public class GetMyInfoUseCase {
                 .map(p -> GatheringResponse.from(p, enrollmentRepository.countByPostId(p.getId()),
                         postImageRepository.findAllByPostId(p.getId()).stream()
                         .map(PostImage::getUrl)
-                        .toList())
+                        .toList(), getNicknameByLeadUserId(p.getLeadUserId()))
                 ).toList();
 
         return MemberResponse.from(member, pendingPostResponses, participatedPostResponses, createdPostResponses);
+    }
+
+    private String getNicknameByLeadUserId(Long leadUserId) {
+        return memberAdaptor.queryById(leadUserId).getNickname();
     }
 
 }
