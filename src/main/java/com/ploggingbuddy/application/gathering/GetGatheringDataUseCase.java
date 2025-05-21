@@ -1,5 +1,6 @@
 package com.ploggingbuddy.application.gathering;
 
+import com.ploggingbuddy.domain.enrollment.service.EnrollmentService;
 import com.ploggingbuddy.domain.gathering.entity.Gathering;
 import com.ploggingbuddy.domain.gathering.service.GatheringService;
 import com.ploggingbuddy.domain.member.entity.Member;
@@ -19,13 +20,16 @@ public class GetGatheringDataUseCase {
     private final GatheringService gatheringService;
     private final MemberService memberService;
     private final PostImageService postImageService;
+    private final EnrollmentService enrollmentService;
 
     public GetGatheringDetailResponse execute(Member member, Long postId) {
 
         Gathering gathering = gatheringService.getGatheringData(postId);
+        Long enrolledCount = enrollmentService.getEnrolledCount(postId);
         String leadUserNickname = memberService.getNicknameById(gathering.getLeadUserId());
         List<String> imageList = postImageService.getPostImageList(postId);
         boolean isAuthor = member.getId().equals(gathering.getLeadUserId());
-        return GetGatheringDetailResponse.of(gathering, leadUserNickname, imageList, isAuthor);
+
+        return GetGatheringDetailResponse.of(gathering, enrolledCount, leadUserNickname, imageList, isAuthor);
     }
 }
