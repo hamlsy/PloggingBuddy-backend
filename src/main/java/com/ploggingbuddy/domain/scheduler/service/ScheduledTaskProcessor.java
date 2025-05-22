@@ -20,10 +20,14 @@ public class ScheduledTaskProcessor {
     @Transactional
     public void processInitScheduling(ScheduledTask task, Long delaySeconds) {
         if (delaySeconds <= 0) {
-            gatheringStatusScheduler.updateGatheringStatusDone(task.getGatheringId());
-            task = scheduledTaskRepository.getById(task.getId());
-            task.scheduledMessageStatusUpdate();
-            scheduledTaskRepository.delete(task);
+            try {
+                gatheringStatusScheduler.updateGatheringStatusDone(task.getGatheringId());
+                task = scheduledTaskRepository.getById(task.getId());
+                task.scheduledMessageStatusUpdate();
+                scheduledTaskRepository.delete(task);
+            } catch (Exception e) {
+                System.err.println("Error processing task: " + e.getMessage());
+            }
         }
     }
 }
