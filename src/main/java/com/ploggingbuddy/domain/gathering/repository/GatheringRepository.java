@@ -21,13 +21,13 @@ public interface GatheringRepository extends JpaRepository<Gathering, Long> {
     @Query("SELECT g FROM Gathering g WHERE g.id = :id")
     Optional<Gathering> findWithLockById(@Param("id") Long id);
 
-    @Query("SELECT g FROM Gathering g WHERE g.leadUserId = :leadUserId order by g.createdAt desc")
+    @Query("SELECT g FROM Gathering g WHERE g.leadUserId = :leadUserId and g.postStatus != 'DELETED' order by g.createdAt desc")
     List<Gathering> findAllByLeadUserIdOrderByDescLimit(@Param("leadUserId") Long leadUserId, Pageable pageable);
 
-    @Query("SELECT g FROM Gathering g JOIN Enrollment e on g.id = e.postId WHERE e.memberId = :memberId and g.postStatus = 'FINISHED' order by g.createdAt desc")
+    @Query("SELECT g FROM Gathering g JOIN Enrollment e on g.id = e.postId WHERE (e.memberId = :memberId and g.postStatus = 'FINISHED' and g.postStatus != 'DELETED') order by g.createdAt desc")
     List<Gathering> findAllByParticipatedUserIdOrderByDescLimit(@Param("memberId") Long memberId, Pageable pageable);
 
-    @Query("SELECT g FROM Gathering g JOIN Enrollment e on g.id = e.postId WHERE e.memberId = :memberId and " +
+    @Query("SELECT g FROM Gathering g JOIN Enrollment e on g.id = e.postId WHERE e.memberId = :memberId and g.postStatus != 'DELETED' and " +
             "(g.postStatus = 'GATHERING' or g.postStatus = 'GATHERING_PENDING' " +
             "or g.postStatus = 'GATHERING_CONFIRMED') order by g.createdAt desc")
     List<Gathering> findAllByPendingUserIdOrderByDescLimit(@Param("memberId") Long memberId, Pageable pageable);
