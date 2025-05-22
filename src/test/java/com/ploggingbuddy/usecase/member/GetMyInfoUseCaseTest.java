@@ -127,7 +127,7 @@ public class GetMyInfoUseCaseTest {
                 .gatheringName(name)
                 .content("Test content for " + name)
                 .participantMaxNumber(10L)
-                .spotName("Test Location")
+                .spotStringAddress("Test Location")
                 .spotLatitude(4.0)
                 .spotLongitude(4.0)
                 .postStatus(GatheringStatus.GATHERING) // Default status
